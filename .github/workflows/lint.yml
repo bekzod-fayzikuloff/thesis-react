@@ -2,7 +2,7 @@ name: Check the source code
 on:
   pull_request:
     branches:
-      - main
+      - master
 jobs:
   test:
     name: Check the source code
