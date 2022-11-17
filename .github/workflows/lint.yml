@@ -1,11 +1,17 @@
-name: CI
-on: push
+name: Check the source code
+on:
+  pull_request:
+    branches:
+      - main
 jobs:
-  build:
+  test:
+    name: Check the source code
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Install modules
-      run: yarn
-    - name: Run ESLint
-      run: eslint . --ext .js,.jsx,.ts,.tsx
+      - uses: actions/checkout@v2
+      - name: Install packages
+        run: npm ci
+      - name: Prettier
+        run: npm run format
+      - name: Lint
+        run: npm run lint
