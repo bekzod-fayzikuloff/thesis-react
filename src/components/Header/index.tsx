@@ -1,3 +1,9 @@
+import style from './Header.module.scss';
+
 export function Header() {
-  return <h1>Header</h1>;
+  return (
+    <header className={style.head__bck}>
+      <p>Header</p>
+    </header>
+  );
 }
