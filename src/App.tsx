@@ -1,19 +1,25 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './App.css';
-import axios from "axios";
+import { FeedPage } from './pages/Feed';
+import { LoginPage } from './pages/Login';
+import { RegisterPage } from './pages/Register';
+import { Route, Routes } from 'react-router-dom';
+import { MainLayout } from './layouts/Main';
+import { NotFound } from './pages/NotFound';
 
 function App() {
-  const url = `http://127.0.0.1:8000/api/chats/`;
-  const [text, setText]: any = useState('')
-
-  useEffect(() => {
-    axios.get(url).then(response => setText(response.data))
-  }, [url])
-
   return (
-    <div className="App">
-      <h1>{text}</h1>
-    </div>
+    <React.Fragment>
+      <Routes>
+        <Route path="/" element={<FeedPage />} />
+        <Route path="/profile" element={<MainLayout />}>
+          <Route index element={<h1>Profile</h1>} />
+        </Route>
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </React.Fragment>
   );
 }
 

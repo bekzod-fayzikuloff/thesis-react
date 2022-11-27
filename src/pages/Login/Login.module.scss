@@ -1,0 +1,11 @@
+@import '../Register/Register.module';
+
+.register__root {
+
+
+  .left__side {
+    width: 40%;
+    background: url("../../assets/images/login.png") no-repeat 0 0 !important;
+    background-size: cover;
+  }
+}
