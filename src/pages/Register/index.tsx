@@ -7,6 +7,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LockIcon from '@mui/icons-material/Lock';
 import { Button, Checkbox, FormControlLabel } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useRef } from 'react';
 
 function RegisterFormSide() {
   const navigate = useNavigate();
@@ -17,13 +18,15 @@ function RegisterFormSide() {
           <Button
             style={{ backgroundColor: '#343A40', borderRadius: '11px' }}
             variant="contained"
-            onClick={() => navigate('/login')}>
+            onClick={() => navigate('/login')}
+          >
             Login
           </Button>
           <Button
             style={{ backgroundColor: '#0055FF', borderRadius: '11px' }}
             variant="contained"
-            onClick={() => navigate('/register')}>
+            onClick={() => navigate('/register')}
+          >
             Register
           </Button>
         </div>
@@ -42,7 +45,23 @@ function RegisterFormSide() {
 }
 
 function RegisterForm() {
-  const navigate = useNavigate();
+  const registerForm = useRef<null | HTMLFormElement>(null);
+
+  const handleRegister = () => {
+    const form = registerForm.current;
+    if (!form) {
+      alert('Not Form');
+      return;
+    }
+    const payload = {
+      username: form.username.value,
+      email: form.email.value,
+      password: form.password.value,
+      passwordConfirm: form.password.value
+    };
+    console.log(payload);
+  };
+
   return (
     <div
       className={style.register__form_r}
@@ -52,67 +71,73 @@ function RegisterForm() {
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%'
-      }}>
+      }}
+    >
       <p className={style.form__headline}>Create your account</p>
       <Box
         className={style.form__box}
         sx={{
-          width: '30%',
+          width: '35%',
           '& > :not(style)': { m: 1 }
-        }}>
-        <Input
-          startAdornment={
-            <InputAdornment position="start">
-              <AccountCircle />
-            </InputAdornment>
-          }
-          fullWidth={true}
-        />
-        <br />
-        <Input
-          id="input-mail"
-          startAdornment={
-            <InputAdornment position="start">
-              <MailOutlineIcon />
-            </InputAdornment>
-          }
-          fullWidth={true}
-        />
-        <br />
-        <Input
-          id="input-password"
-          startAdornment={
-            <InputAdornment position="start">
-              <LockIcon />
-            </InputAdornment>
-          }
-          type={'password'}
-          fullWidth={true}
-        />
-        <br />
-        <Input
-          id="input-password-confirm"
-          startAdornment={
-            <InputAdornment position="start">
-              <LockIcon />
-            </InputAdornment>
-          }
-          type={'password'}
-          fullWidth={true}
-        />
-        <br />
-        <FormControlLabel
-          style={{ color: '#808383' }}
-          control={<Checkbox style={{ fontSize: '12px' }} name="term" />}
-          label="Accept Term and Conditions"
-        />
-        <Button
-          style={{ backgroundColor: '#343A40', borderRadius: '7px' }}
-          variant="contained"
-          fullWidth={true}
-          onClick={() => navigate('/login')}>
-          Register
-        </Button>
+        }}
+      >
+        <form ref={registerForm}>
+          <Input
+            id="username"
+            startAdornment={
+              <InputAdornment position="start">
+                <AccountCircle />
+              </InputAdornment>
+            }
+            fullWidth={true}
+          />
+          <br />
+          <Input
+            id="email"
+            startAdornment={
+              <InputAdornment position="start">
+                <MailOutlineIcon />
+              </InputAdornment>
+            }
+            fullWidth={true}
+          />
+          <br />
+          <Input
+            id="password"
+            startAdornment={
+              <InputAdornment position="start">
+                <LockIcon />
+              </InputAdornment>
+            }
+            type={'password'}
+            fullWidth={true}
+          />
+          <br />
+          <Input
+            id="passwordConfirm"
+            startAdornment={
+              <InputAdornment position="start">
+                <LockIcon />
+              </InputAdornment>
+            }
+            type={'password'}
+            fullWidth={true}
+          />
+          <br />
+          <FormControlLabel
+            style={{ color: '#808383' }}
+            control={<Checkbox style={{ fontSize: '12px' }} name="term" />}
+            label="Accept Term and Conditions"
+          />
+          <Button
+            onClick={handleRegister}
+            style={{ backgroundColor: '#343A40', borderRadius: '7px' }}
+            variant="contained"
+            fullWidth={true}
+          >
+            Register
+          </Button>
+        </form>
       </Box>
     </div>
   );
