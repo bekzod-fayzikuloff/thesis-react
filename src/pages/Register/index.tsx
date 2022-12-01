@@ -8,6 +8,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import { Button, Checkbox, FormControlLabel } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
+import axios from 'axios';
 
 function RegisterFormSide() {
   const navigate = useNavigate();
@@ -18,15 +19,13 @@ function RegisterFormSide() {
           <Button
             style={{ backgroundColor: '#343A40', borderRadius: '11px' }}
             variant="contained"
-            onClick={() => navigate('/login')}
-          >
+            onClick={() => navigate('/login')}>
             Login
           </Button>
           <Button
             style={{ backgroundColor: '#0055FF', borderRadius: '11px' }}
             variant="contained"
-            onClick={() => navigate('/register')}
-          >
+            onClick={() => navigate('/register')}>
             Register
           </Button>
         </div>
@@ -45,6 +44,7 @@ function RegisterFormSide() {
 }
 
 function RegisterForm() {
+  const navigate = useNavigate();
   const registerForm = useRef<null | HTMLFormElement>(null);
 
   const handleRegister = () => {
@@ -59,6 +59,14 @@ function RegisterForm() {
       password: form.password.value,
       passwordConfirm: form.password.value
     };
+    axios
+      .post('http://localhost:8000/api/auth/register/', payload)
+      .then((response) => {
+        if (response.status === 200) {
+          navigate('/login');
+        }
+      })
+      .catch((reason) => alert('Some error'));
     console.log(payload);
   };
 
@@ -71,16 +79,14 @@ function RegisterForm() {
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%'
-      }}
-    >
+      }}>
       <p className={style.form__headline}>Create your account</p>
       <Box
         className={style.form__box}
         sx={{
           width: '35%',
           '& > :not(style)': { m: 1 }
-        }}
-      >
+        }}>
         <form ref={registerForm}>
           <Input
             id="username"
@@ -133,8 +139,7 @@ function RegisterForm() {
             onClick={handleRegister}
             style={{ backgroundColor: '#343A40', borderRadius: '7px' }}
             variant="contained"
-            fullWidth={true}
-          >
+            fullWidth={true}>
             Register
           </Button>
         </form>

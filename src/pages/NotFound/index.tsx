@@ -1,4 +1,4 @@
-import style from './404.module.scss'
+import style from './404.module.scss';
 
 export function NotFound() {
   return (
@@ -10,5 +10,5 @@ export function NotFound() {
         </div>
       </div>
     </main>
-  )
+  );
 }
