@@ -5,10 +5,12 @@ import InputAdornment from '@mui/material/InputAdornment';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LockIcon from '@mui/icons-material/Lock';
-import { Button, Checkbox, FormControlLabel } from '@mui/material';
+import { Alert, Button, Checkbox, FormControlLabel } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { API_URL } from '../../config';
 import axios from 'axios';
+import { InfinitySpin } from 'react-loader-spinner';
 
 function RegisterFormSide() {
   const navigate = useNavigate();
@@ -48,11 +50,19 @@ function RegisterFormSide() {
 function RegisterForm() {
   const navigate = useNavigate();
   const registerForm = useRef<null | HTMLFormElement>(null);
+  const [isLoading, setLoading] = useState(false);
+  const [isError, setError] = useState(false);
+  const [errorText, setErrorText] = useState('Something with server was wrong');
 
   const handleRegister = () => {
     const form = registerForm.current;
     if (!form) {
       alert('Not Form');
+      return;
+    }
+    if (!form.term.checked) {
+      setErrorText('You must accept the terms of the agreement');
+      setError(true);
       return;
     }
     const payload = {
@@ -61,15 +71,23 @@ function RegisterForm() {
       password: form.password.value,
       passwordConfirm: form.password.value
     };
+    setLoading(true);
     axios
-      .post('http://localhost:8000/api/auth/register/', payload)
+      .post(`${API_URL}/api/auth/register/`, payload)
       .then((response) => {
         if (response.status === 200) {
-          navigate('/login');
+          setTimeout(() => {
+            setLoading(false);
+            navigate('/login');
+          }, 2000);
         }
       })
-      .catch((reason) => alert('Some error'));
-    console.log(payload);
+      .catch((reason) => {
+        console.log(reason);
+        setLoading(false);
+        setErrorText('Something with server was wrong');
+        setError(true);
+      });
   };
 
   return (
@@ -84,6 +102,8 @@ function RegisterForm() {
       }}
     >
       <p className={style.form__headline}>Create your account</p>
+      {isLoading && <InfinitySpin width="200" color="#4fa94d" />}
+      {isError && <Alert severity="error">{errorText}</Alert>}
       <Box
         className={style.form__box}
         sx={{
@@ -93,6 +113,7 @@ function RegisterForm() {
       >
         <form ref={registerForm}>
           <Input
+            placeholder="Username"
             id="username"
             startAdornment={
               <InputAdornment position="start">
@@ -103,6 +124,7 @@ function RegisterForm() {
           />
           <br />
           <Input
+            placeholder="Email"
             id="email"
             startAdornment={
               <InputAdornment position="start">
@@ -113,6 +135,7 @@ function RegisterForm() {
           />
           <br />
           <Input
+            placeholder="Password"
             id="password"
             startAdornment={
               <InputAdornment position="start">
@@ -124,6 +147,7 @@ function RegisterForm() {
           />
           <br />
           <Input
+            placeholder="Confirm password"
             id="passwordConfirm"
             startAdornment={
               <InputAdornment position="start">
@@ -136,7 +160,7 @@ function RegisterForm() {
           <br />
           <FormControlLabel
             style={{ color: '#808383' }}
-            control={<Checkbox style={{ fontSize: '12px' }} name="term" />}
+            control={<Checkbox id="term" style={{ fontSize: '12px' }} name="term" />}
             label="Accept Term and Conditions"
           />
           <Button

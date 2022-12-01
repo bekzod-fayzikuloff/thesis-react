@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LockIcon from '@mui/icons-material/Lock';
 import { useContext, useRef } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { AccountCircle } from '@mui/icons-material';
 
 function LoginFormSide() {
   const navigate = useNavigate();
@@ -59,7 +59,7 @@ function LoginForm() {
       return;
     }
     const payload = {
-      username: form.email.value,
+      username: form.username.value,
       password: form.password.value
     };
     const { username, password } = payload;
@@ -87,14 +87,13 @@ function LoginForm() {
       >
         <form ref={loginForm}>
           <Input
-            id="email"
+            id="username"
             startAdornment={
               <InputAdornment position="start">
-                <MailOutlineIcon />
+                <AccountCircle />
               </InputAdornment>
             }
-            placeholder="Enter your email"
-            type={'email'}
+            placeholder="Enter your username"
             fullWidth={true}
           />
           <br />
