@@ -1,13 +1,13 @@
 import style from './Login.module.scss';
-import {Button, Checkbox, FormControlLabel} from '@mui/material';
-import {useNavigate} from 'react-router-dom';
+import { Button, Checkbox, FormControlLabel } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LockIcon from '@mui/icons-material/Lock';
-import {useContext, useRef} from 'react';
-import {AuthContext} from "../../context/AuthContext";
+import { useContext, useRef } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 
 function LoginFormSide() {
   const navigate = useNavigate();
@@ -17,14 +17,14 @@ function LoginFormSide() {
       <div className={style.buttons__sections}>
         <div>
           <Button
-            style={{backgroundColor: '#343A40', borderRadius: '11px'}}
+            style={{ backgroundColor: '#343A40', borderRadius: '11px' }}
             variant="contained"
             onClick={() => navigate('/login')}
           >
             Login
           </Button>
           <Button
-            style={{backgroundColor: '#0055FF', borderRadius: '11px'}}
+            style={{ backgroundColor: '#0055FF', borderRadius: '11px' }}
             variant="contained"
             onClick={() => navigate('/register')}
           >
@@ -33,11 +33,11 @@ function LoginFormSide() {
         </div>
       </div>
 
-      <LoginForm/>
+      <LoginForm />
       <p className={style.form__underline}>
         Dont have account
         <span
-          style={{color: '#1E74FD', fontWeight: 'bold'}}
+          style={{ color: '#1E74FD', fontWeight: 'bold' }}
           onClick={() => navigate('/register')}
         >
           {' '}
@@ -50,7 +50,7 @@ function LoginFormSide() {
 
 function LoginForm() {
   const loginForm = useRef<null | HTMLFormElement>(null);
-  const {loginUser} = useContext(AuthContext)
+  const { loginUser } = useContext(AuthContext);
 
   const handleLogin = () => {
     const form = loginForm.current;
@@ -62,7 +62,7 @@ function LoginForm() {
       username: form.email.value,
       password: form.password.value
     };
-    const {username, password} = payload
+    const { username, password } = payload;
     loginUser(username, password);
   };
 
@@ -82,7 +82,7 @@ function LoginForm() {
         className={style.form__box}
         sx={{
           width: '35%',
-          '& > :not(style)': {m: 1}
+          '& > :not(style)': { m: 1 }
         }}
       >
         <form ref={loginForm}>
@@ -90,33 +90,33 @@ function LoginForm() {
             id="email"
             startAdornment={
               <InputAdornment position="start">
-                <MailOutlineIcon/>
+                <MailOutlineIcon />
               </InputAdornment>
             }
             placeholder="Enter your email"
             type={'email'}
             fullWidth={true}
           />
-          <br/>
+          <br />
           <Input
             id="password"
             startAdornment={
               <InputAdornment position="start">
-                <LockIcon/>
+                <LockIcon />
               </InputAdornment>
             }
             placeholder="Enter your password"
             type={'password'}
             fullWidth={true}
           />
-          <br/>
+          <br />
           <FormControlLabel
-            style={{color: '#808383'}}
-            control={<Checkbox style={{fontSize: '12px'}} name="remember"/>}
+            style={{ color: '#808383' }}
+            control={<Checkbox style={{ fontSize: '12px' }} name="remember" />}
             label="Remember me"
           />
           <Button
-            style={{backgroundColor: '#343A40', borderRadius: '7px'}}
+            style={{ backgroundColor: '#343A40', borderRadius: '7px' }}
             variant="contained"
             fullWidth={true}
             onClick={handleLogin}
@@ -133,7 +133,7 @@ export function LoginPage() {
   return (
     <main className={style.register__root}>
       <div className={style.left__side}></div>
-      <LoginFormSide/>
+      <LoginFormSide />
     </main>
   );
 }

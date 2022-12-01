@@ -19,13 +19,15 @@ function RegisterFormSide() {
           <Button
             style={{ backgroundColor: '#343A40', borderRadius: '11px' }}
             variant="contained"
-            onClick={() => navigate('/login')}>
+            onClick={() => navigate('/login')}
+          >
             Login
           </Button>
           <Button
             style={{ backgroundColor: '#0055FF', borderRadius: '11px' }}
             variant="contained"
-            onClick={() => navigate('/register')}>
+            onClick={() => navigate('/register')}
+          >
             Register
           </Button>
         </div>
@@ -79,14 +81,16 @@ function RegisterForm() {
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%'
-      }}>
+      }}
+    >
       <p className={style.form__headline}>Create your account</p>
       <Box
         className={style.form__box}
         sx={{
           width: '35%',
           '& > :not(style)': { m: 1 }
-        }}>
+        }}
+      >
         <form ref={registerForm}>
           <Input
             id="username"
@@ -139,7 +143,8 @@ function RegisterForm() {
             onClick={handleRegister}
             style={{ backgroundColor: '#343A40', borderRadius: '7px' }}
             variant="contained"
-            fullWidth={true}>
+            fullWidth={true}
+          >
             Register
           </Button>
         </form>
