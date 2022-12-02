@@ -1,13 +1,15 @@
 import style from './Login.module.scss';
-import { Button, Checkbox, FormControlLabel } from '@mui/material';
+import { Alert, Button, Checkbox, FormControlLabel } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import LockIcon from '@mui/icons-material/Lock';
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { AccountCircle } from '@mui/icons-material';
+import { validatePassword, validateUsername } from '../../services/utils/validators';
+import { InfinitySpin } from 'react-loader-spinner';
 
 function LoginFormSide() {
   const navigate = useNavigate();
@@ -48,9 +50,18 @@ function LoginFormSide() {
   );
 }
 
+type LoginPayload = {
+  username?: string;
+  password?: string;
+};
+
 function LoginForm() {
+  const navigate = useNavigate();
   const loginForm = useRef<null | HTMLFormElement>(null);
   const { loginUser } = useContext(AuthContext);
+  const [isLoading, setLoading] = useState(false);
+  const [isError, setError] = useState(false);
+  const [errorText, setErrorText] = useState('Something with server was wrong');
 
   const handleLogin = () => {
     const form = loginForm.current;
@@ -58,12 +69,50 @@ function LoginForm() {
       alert('Not Form');
       return;
     }
-    const payload = {
-      username: form.username.value,
-      password: form.password.value
-    };
+    const payload: LoginPayload = {};
+    try {
+      payload.username = validateUsername(form.username.value);
+      payload.password = validatePassword(form.password.value);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        switch (err.message) {
+          case 'UsernameError':
+            setErrorText(
+              'The user field is require length must be greater then 4 and not contains space'
+            );
+            break;
+          case 'EmailError':
+            setErrorText('The email field should not be valid, check the correctness of filling');
+            break;
+          case 'PasswordError':
+            setErrorText(
+              'The password field is require length must be not less then 8 and not contains space and not be too common'
+            );
+            break;
+          case 'PasswordDiffError':
+            setErrorText('The password is different');
+            break;
+          default:
+            setErrorText(err.message);
+        }
+        setError(true);
+      }
+      return;
+    }
     const { username, password } = payload;
-    loginUser(username, password);
+    setLoading(true);
+    loginUser(
+      username,
+      password,
+      () => {
+        setLoading(false);
+        navigate('/');
+      },
+      () => {
+        setLoading(false);
+        setError(true);
+      }
+    );
   };
 
   return (
@@ -78,6 +127,8 @@ function LoginForm() {
       }}
     >
       <p className={style.form__headline}>Login into your account</p>
+      {isLoading && <InfinitySpin width="200" color="#4fa94d" />}
+      {isError && <Alert severity="error">{errorText}</Alert>}
       <Box
         className={style.form__box}
         sx={{
@@ -88,6 +139,7 @@ function LoginForm() {
         <form ref={loginForm}>
           <Input
             id="username"
+            onChange={() => setError(false)}
             startAdornment={
               <InputAdornment position="start">
                 <AccountCircle />
@@ -98,6 +150,7 @@ function LoginForm() {
           />
           <br />
           <Input
+            onChange={() => setError(false)}
             id="password"
             startAdornment={
               <InputAdornment position="start">

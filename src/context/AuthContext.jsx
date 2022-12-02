@@ -19,7 +19,7 @@ const AuthProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
-  const loginUser = async (username, password) => {
+  const loginUser = async (username, password, success, fail) => {
     const loginUrl = `${API_URL}/api/auth/token/`;
 
     const response = await fetch(loginUrl, {
@@ -38,9 +38,9 @@ const AuthProvider = ({ children }) => {
       setUser(jwt_decode(responseData.access));
 
       localStorage.setItem('authToken', JSON.stringify(responseData));
-      navigate('/');
+      success();
     } else {
-      alert('Invalid credentials');
+      fail();
     }
   };
 
