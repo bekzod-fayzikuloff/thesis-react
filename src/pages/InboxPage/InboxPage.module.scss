@@ -18,6 +18,21 @@
       border-bottom: 1px solid #b4b4b4;
       width: 100%;
       height: 29pt;
+      display: flex;
+
+      .inbox__separate {
+        width: 50%;
+        text-align: center;
+        font-size: 16px;
+        text-transform: capitalize;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .inbox__separate:hover {
+        background-color: #d3d6e0;
+      }
+
     }
 
     .inbox__content {

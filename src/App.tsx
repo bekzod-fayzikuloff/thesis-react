@@ -9,24 +9,31 @@ import { NotFound } from './pages/NotFoundPage';
 import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import { ProfilePage } from './pages/ProfilePage';
-import { InboxPage } from './pages/InboxPage';
+import { InboxLayout } from './layouts/Inbox';
+import { InboxEmpty } from './pages/InboxPage';
+import { UtilsProvider } from './context/UtilsProvider';
 
 function App() {
   return (
     <React.Fragment>
       <AuthProvider>
-        <Routes>
-          <Route path="/" element={<PrivateRoute />}>
-            <Route path="/" element={<MainLayout />}>
-              <Route index element={<FeedPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/inbox" element={<InboxPage />} />
+        <UtilsProvider>
+          <Routes>
+            <Route path="/" element={<PrivateRoute />}>
+              <Route path="/" element={<MainLayout />}>
+                <Route index element={<FeedPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/" element={<InboxLayout />}>
+                  <Route path="/inbox" element={<InboxEmpty />} />
+                  <Route path="/d/:chatId" element={<h1>Hello</h1>} />
+                </Route>
+              </Route>
             </Route>
-          </Route>
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </UtilsProvider>
       </AuthProvider>
     </React.Fragment>
   );
