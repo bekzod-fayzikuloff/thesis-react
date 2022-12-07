@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const sendData = async (resourceUrl: string, data: object) => {
   return await fetch(resourceUrl, {
@@ -31,4 +31,4 @@ const getResponse = async (resourceUrl: string, authTokenAccess: string | null) 
   });
 };
 
-export {sendData, sendDataAuthRequire, getResponse};
+export { sendData, sendDataAuthRequire, getResponse };
