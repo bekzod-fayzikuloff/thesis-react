@@ -1,0 +1,122 @@
+$fcolor: #343131;
+$fcolorHover: #fc9e19;
+
+
+main {
+
+  a {
+    margin-top: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    text-decoration: none;
+    color: $fcolor;
+  }
+
+  a:hover {
+    color: $fcolorHover;
+  }
+
+  .grid__wrapper {
+    display: flex;
+    justify-content: center;
+
+    .grid {
+      width: 70%;
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    div > div {
+      text-align: center;
+      padding: 10px;
+      height: 350px;
+      width: 100%;
+
+      img {
+
+        width: 100%;
+        height: 250px;
+        border-radius: 10px;
+
+      }
+    }
+  }
+}
+
+
+.root {
+  background-color: #FBFCFE;
+  height: 100vh;;
+  width: 100%;
+  margin-left: 17%;
+
+  .container__wrap {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+
+    .container {
+      display: flex;
+      background-color: #fff;
+      width: 60%;
+      height: 26%;
+      border-bottom-left-radius: 17px;
+      border-bottom-right-radius: 17px;
+      border-left: solid 0.5px #949393;
+      border-right: solid 0.5px #949393;
+      border-bottom: solid 0.5px #949393;
+
+
+      .image__section {
+        padding: 10pt 17pt 10pt 20pt;
+        width: 150px;
+        height: 150px;
+
+        img {
+          flex: 2;
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          border: 2px solid #ffffff;
+        }
+      }
+
+      .description__section {
+        width: 100%;
+        padding-top: 27pt;
+
+        .headline__content {
+          display: flex;
+
+          p {
+            color: #313942;
+            font-size: 24px;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+
+  }
+}
+
+.inbox__modal {
+  width: 82.27vw;
+  height: 100%;
+}
+
+.edit__item {
+  cursor: pointer;
+  padding: 12pt 0 0 0;
+  width: 100%;
+  height: 24pt;
+  border-bottom: #313942 1px solid;
+
+  p {
+    font-size: 17px;
+    font-weight: 550;
+    text-align: center;
+    text-transform: capitalize;
+  }
+}

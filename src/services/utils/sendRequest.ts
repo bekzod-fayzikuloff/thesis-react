@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const sendData = async (resourceUrl: string, data: object) => {
   return await fetch(resourceUrl, {
     method: 'POST',
@@ -19,8 +21,8 @@ const sendDataAuthRequire = async (resourceUrl: string, data: object, authToken:
   });
 };
 
-const getResponse = async (resourceUrl: string, authTokenAccess: string) => {
-  return await fetch(resourceUrl, {
+const getResponse = async (resourceUrl: string, authTokenAccess: string | null) => {
+  return await axios.get(resourceUrl, {
     method: 'GET',
     headers: {
       'Content-type': 'application/json',
@@ -29,4 +31,4 @@ const getResponse = async (resourceUrl: string, authTokenAccess: string) => {
   });
 };
 
-export { sendData, sendDataAuthRequire, getResponse };
+export {sendData, sendDataAuthRequire, getResponse};
