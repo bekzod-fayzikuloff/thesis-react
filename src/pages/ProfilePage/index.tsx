@@ -24,18 +24,17 @@ interface IPost {
   medias: Media[];
 }
 
-const PostContainer = (props: { userName: string }) => {
-  const navigate = useNavigate();
+const PostContainer = (props: { userId: number; navigate: any }) => {
   const [posts, setPosts] = useState<IPost[]>([]);
-
+  const { userId } = useParams();
   useEffect(() => {
     getResponse(
-      `${API_URL}/api/posts/?created_by=${props.userName}`,
+      `${API_URL}/api/posts/?created_by=${userId}`,
       JSON.parse(localStorage.getItem('authToken') as string).access
     ).then((response) => {
       setPosts(response.data.results);
     });
-  }, []);
+  }, [props.navigate]);
 
   return (
     <div className={style.grid__wrapper}>
@@ -44,7 +43,7 @@ const PostContainer = (props: { userName: string }) => {
           return (
             <div key={post?.id}>
               <img
-                onClick={() => navigate(`/p/${post?.id}`)}
+                onClick={() => props.navigate(`/p/${post?.id}`)}
                 src={post?.medias[0]?.file}
                 referrerPolicy="no-referrer"
                 alt=""
@@ -95,6 +94,7 @@ export function ProfilePage() {
   const [isFound, setIsFound] = useState(true);
 
   useEffect(() => {
+    console.log('GGG');
     getResponse(
       `${API_URL}/api/profiles/${userId}/`,
       JSON.parse(localStorage.getItem('authToken') as string).access
@@ -107,7 +107,7 @@ export function ProfilePage() {
         setIsFound(false);
         setUser(null);
       });
-  }, []);
+  }, [navigate]);
   if (!isFound && !user) {
     return <h1>Пользователь не найден</h1>;
   }
@@ -154,7 +154,7 @@ export function ProfilePage() {
               </div>
             </div>
           </div>
-          <PostContainer userName={user?.username} />
+          <PostContainer userId={user?.id} navigate={navigate} />
           <Modal
             className={style.inbox__modal}
             style={{ width: '20%', height: '200pt', padding: 0 }}
