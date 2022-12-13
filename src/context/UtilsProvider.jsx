@@ -1,20 +1,28 @@
-import { createContext, useState } from 'react';
+import {createContext, useState} from 'react';
 
 const UtilsContext = createContext();
 
-const UtilsProvider = ({ children }) => {
+const UtilsProvider = ({children}) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => {
-    console.log('some shit');
     setModalOpen(!isModalOpen);
   };
 
+  const changeFollowersState = () => {
+    setFollowerDelete(!isFollowerDelete)
+  }
+
+  const [isFollowerDelete, setFollowerDelete] = useState(false)
+
   const contextData = {
     isModalOpen,
-    openModal
+    openModal,
+    isFollowerDelete,
+    changeFollowersState
   };
 
-  return <UtilsContext.Provider value={contextData}>{children}</UtilsContext.Provider>;
+  return <UtilsContext.Provider
+    value={contextData}>{children}</UtilsContext.Provider>;
 };
-export { UtilsContext };
-export { UtilsProvider };
+export {UtilsContext};
+export {UtilsProvider};

@@ -35,3 +35,4 @@ export function validate(func: (value: string) => boolean, value: string, error:
     return value;
   } else throw error;
 }
+
