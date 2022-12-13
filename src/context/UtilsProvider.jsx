@@ -5,13 +5,20 @@ const UtilsContext = createContext();
 const UtilsProvider = ({ children }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => {
-    console.log('some shit');
     setModalOpen(!isModalOpen);
   };
 
+  const changeFollowersState = () => {
+    setFollowerDelete(!isFollowerDelete);
+  };
+
+  const [isFollowerDelete, setFollowerDelete] = useState(false);
+
   const contextData = {
     isModalOpen,
-    openModal
+    openModal,
+    isFollowerDelete,
+    changeFollowersState
   };
 
   return <UtilsContext.Provider value={contextData}>{children}</UtilsContext.Provider>;
