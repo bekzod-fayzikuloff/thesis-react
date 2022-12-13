@@ -86,13 +86,35 @@ main {
         width: 100%;
         padding-top: 27pt;
 
+        .profile__description {
+          border-top: 1px solid grey;
+          width: 70%;
+          margin-top: 4pt;
+        }
+
+        .info__section {
+          margin-top: 4pt;
+          display: flex;
+
+          p {
+            margin-right: 20pt;
+          }
+        }
+
         .headline__content {
           display: flex;
+          align-items: center;
 
           p {
             color: #313942;
             font-size: 24px;
             font-weight: 600;
+            margin-right: 7pt;
+          }
+
+          svg:hover {
+            cursor: pointer;
+            filter: invert(50%) sepia(15%) saturate(294%) hue-rotate(135deg) brightness(94%) contrast(88%);
           }
         }
       }
@@ -154,6 +176,7 @@ main {
   .model__close_btn {
     margin: 2px;
     height: 100%;
+    cursor: pointer;
   }
 }
 
@@ -170,7 +193,7 @@ main {
 
   p {
     margin-left: 4pt;
-    width: 71%;
+    width: 70%;
     display: table;
 
     span {
@@ -189,9 +212,18 @@ main {
       border: 1px solid grey;
       cursor: pointer;
     }
+
+    span:hover {
+      border: 1px solid #000000;
+      color: #f18484;
+    }
   }
 }
 
 .follower__item:hover {
   background-color: #f5f1f1;
+}
+
+.logout__item p:hover {
+  color: #f18484;
 }

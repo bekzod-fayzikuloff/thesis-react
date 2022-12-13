@@ -48,12 +48,24 @@ const PagePrivate = () => {
   );
 };
 
-const FollowerItem = (props: { followerItem: IFollower; onRemove: () => void }) => {
+const FollowerItem = (props: {
+  followerItem: IFollower;
+  onRemove: () => void;
+  onClose: () => void;
+}) => {
   const { changeFollowersState } = useContext(UtilsContext);
+  const { userId } = useParams();
+  const { user_id }: { user_id: number } = jwt_decode(localStorage.getItem('authToken') as string);
+  const navigate = useNavigate();
+
   return (
     <div className={style.follower__item}>
       <div>
         <img
+          onClick={() => {
+            props.onClose();
+            navigate(`/profile/${props.followerItem.follower.id}`);
+          }}
           style={{
             margin: '4pt',
             width: '36px',
@@ -62,30 +74,47 @@ const FollowerItem = (props: { followerItem: IFollower; onRemove: () => void }) 
           }}
           src={
             props.followerItem.follower.avatar
-              ? props.followerItem.follower.avatar
+              ? API_URL?.concat(props.followerItem.follower.avatar)
               : defaultUserLogo
           }
           alt=""
         />
       </div>
       <p>
-        <span>{props.followerItem.follower.username}</span>
-      </p>
-      <div>
         <span
           onClick={() => {
-            props.onRemove();
-            changeFollowersState();
+            props.onClose();
+            navigate(`/profile/${props.followerItem.follower.id}`);
           }}
         >
-          delete
+          {props.followerItem.follower.username}
         </span>
-      </div>
+      </p>
+      {user_id === Number(userId) && (
+        <div>
+          <span
+            onClick={() => {
+              props.onRemove();
+              changeFollowersState();
+            }}
+          >
+            unfollow
+          </span>
+        </div>
+      )}
     </div>
   );
 };
 
-const FollowersItems = ({ followed, setFollowed }: { followed: IFollower[]; setFollowed: any }) => {
+const FollowersItems = ({
+  followed,
+  setFollowed,
+  onClose
+}: {
+  followed: IFollower[];
+  setFollowed: any;
+  onClose: () => void;
+}) => {
   const onRemove = (id: number) => {
     deleteFollower(id);
     setFollowed((prevState: { filter: (p: (follower: IFollower) => boolean) => any }) => {
@@ -98,6 +127,7 @@ const FollowersItems = ({ followed, setFollowed }: { followed: IFollower[]; setF
       {followed.map((followedItem) => (
         <FollowerItem
           key={followedItem.id}
+          onClose={onClose}
           onRemove={() => onRemove(followedItem.id)}
           followerItem={followedItem}
         />
@@ -146,7 +176,7 @@ const EditItem = (props: {
   text?: string;
 }) => {
   return (
-    <div onClick={props.onClick} className={style.edit__item}>
+    <div onClick={props.onClick} className={`${style.edit__item} ${props.className}`}>
       {props.text ? <p>{props.text}</p> : props.children}
     </div>
   );
@@ -187,6 +217,12 @@ const ModalClose = (props: { onClose: () => void; headlineText: string }) => {
   );
 };
 
+function PrivateFollower() {
+  return (
+    <p style={{ textAlign: 'center', margin: '4pt' }}>Закрытый аккаунт вам нужно подписаться</p>
+  );
+}
+
 export function ProfilePage() {
   const { logoutUser } = useContext(AuthContext);
   const { isFollowerDelete } = useContext(UtilsContext);
@@ -212,7 +248,6 @@ export function ProfilePage() {
     )
       .then((response) => {
         setUser(response.data);
-        console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -222,7 +257,6 @@ export function ProfilePage() {
   }, [navigate]);
 
   useEffect(() => {
-    console.log('User follower count change');
     if (user !== null) {
       // @ts-ignore
       setUser((prevState) => ({
@@ -234,19 +268,16 @@ export function ProfilePage() {
   }, [isFollowerDelete]);
 
   useEffect(() => {
-    console.log('render followers change');
     getResponse(
       `${API_URL}/api/profiles/${userId}/followers/`,
       JSON.parse(localStorage.getItem('authToken') as string).access
     ).then((response) => {
-      console.log(response.data);
       setFollowers(response.data);
     });
     getResponse(
       `${API_URL}/api/profiles/${userId}/followed/`,
       JSON.parse(localStorage.getItem('authToken') as string).access
     ).then((response) => {
-      console.log('followed', response.data);
       setFollowed(response.data);
     });
   }, [userId]);
@@ -275,31 +306,36 @@ export function ProfilePage() {
                   <p>{user?.username}</p>
                   {user?.username === username ? (
                     <>
-                      <Button
-                        style={{
-                          padding: '1px 17px',
-                          marginLeft: '17pt',
-                          marginRight: '7pt'
-                        }}
-                        variant="outlined"
-                        sx={{
-                          fontSize: 12
-                        }}
-                        onClick={() => navigate('/profile/edit')}
-                      >
-                        Edit
-                      </Button>
                       <SettingsOutlinedIcon onClick={() => editToggle()} />
                     </>
                   ) : (
-                    <h1>guest</h1>
+                    <Button
+                      style={{
+                        padding: '1px 17px',
+                        marginLeft: '17pt',
+                        marginRight: '7pt'
+                      }}
+                      variant="outlined"
+                      sx={{
+                        fontSize: 12
+                      }}
+                      onClick={() => navigate('/profile/edit')}
+                    >
+                      Follow
+                    </Button>
                   )}
                 </div>
-                <div>
+                <div className={style.profile__description}>
                   <p>{user?.description}</p>
+                </div>
+                <div className={style.info__section}>
                   <p>Posts: {user?.postsCount}</p>
-                  <p onClick={followerToggle}>Followers: {user?.followersCount}</p>
-                  <p onClick={followedToggle}>Followed: {user?.followedToCount}</p>
+                  <p style={{ cursor: 'pointer' }} onClick={followerToggle}>
+                    Followers: {user?.followersCount}
+                  </p>
+                  <p style={{ cursor: 'pointer' }} onClick={followedToggle}>
+                    Followed: {user?.followedToCount}
+                  </p>
                 </div>
               </div>
             </div>
@@ -311,7 +347,7 @@ export function ProfilePage() {
             isOpen={editIsOpen}
             toggle={editToggle}
           >
-            <EditItem onClick={logoutUser} text="Logout" />
+            <EditItem className={style.logout__item} onClick={logoutUser} text="Logout" />
           </Modal>
           <Modal
             className={style.inbox__modal}
@@ -320,7 +356,15 @@ export function ProfilePage() {
             toggle={followerToggle}
           >
             <ModalClose headlineText={'Followers'} onClose={followerToggle} />
-            <FollowersItems setFollowed={setFollowers} followed={followers} />
+            {checkProfileViewPermission() ? (
+              <FollowersItems
+                onClose={followerToggle}
+                setFollowed={setFollowers}
+                followed={followers}
+              />
+            ) : (
+              <PrivateFollower />
+            )}
           </Modal>
 
           <Modal
@@ -330,7 +374,15 @@ export function ProfilePage() {
             toggle={followedToggle}
           >
             <ModalClose headlineText={'Followed'} onClose={followedToggle} />
-            <FollowersItems setFollowed={setFollowed} followed={followed} />
+            {checkProfileViewPermission() ? (
+              <FollowersItems
+                onClose={followedToggle}
+                setFollowed={setFollowed}
+                followed={followed}
+              />
+            ) : (
+              <PrivateFollower />
+            )}
           </Modal>
         </div>
       </>
