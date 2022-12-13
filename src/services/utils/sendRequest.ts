@@ -17,7 +17,7 @@ const sendDataAuthRequire = async (
   authTokenAccess: any
 ) => {
   return await axios({
-    method: 'DELETE',
+    method: method,
     url: resourceUrl,
     headers: {
       'Content-type': 'application/json',

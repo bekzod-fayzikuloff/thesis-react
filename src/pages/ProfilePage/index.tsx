@@ -27,14 +27,12 @@ export interface IPost {
 
 const deleteFollower = (followerId: number) => {
   sendDataAuthRequire(
-    'POST',
+    'DELETE',
     `${API_URL}/api/followers/${followerId}/`,
     {},
     JSON.parse(localStorage.getItem('authToken') as string).access
   )
-    .then((r) => {
-      console.log(r);
-    })
+    .then()
     .catch((e) => {
       console.log(e);
     });
@@ -50,7 +48,7 @@ const PagePrivate = () => {
   );
 };
 
-const FollowerItem = (props: { followerItem: IFollower }) => {
+const FollowerItem = (props: { followerItem: IFollower; onRemove: () => void }) => {
   const { changeFollowersState } = useContext(UtilsContext);
   return (
     <div className={style.follower__item}>
@@ -76,13 +74,34 @@ const FollowerItem = (props: { followerItem: IFollower }) => {
       <div>
         <span
           onClick={() => {
-            deleteFollower(props.followerItem.id);
+            props.onRemove();
             changeFollowersState();
           }}
         >
           delete
         </span>
       </div>
+    </div>
+  );
+};
+
+const FollowersItems = ({ followed, setFollowed }: { followed: IFollower[]; setFollowed: any }) => {
+  const onRemove = (id: number) => {
+    deleteFollower(id);
+    setFollowed((prevState: { filter: (p: (follower: IFollower) => boolean) => any }) => {
+      return prevState.filter((follower) => follower.id !== id);
+    });
+  };
+
+  return (
+    <div className={style.followers_listbox}>
+      {followed.map((followedItem) => (
+        <FollowerItem
+          key={followedItem.id}
+          onRemove={() => onRemove(followedItem.id)}
+          followerItem={followedItem}
+        />
+      ))}
     </div>
   );
 };
@@ -200,7 +219,19 @@ export function ProfilePage() {
         setIsFound(false);
         setUser(null);
       });
-  }, [navigate, isFollowerDelete]);
+  }, [navigate]);
+
+  useEffect(() => {
+    console.log('User follower count change');
+    if (user !== null) {
+      // @ts-ignore
+      setUser((prevState) => ({
+        ...prevState,
+        followersCount: followers.length,
+        followedToCount: followed.length
+      }));
+    }
+  }, [isFollowerDelete]);
 
   useEffect(() => {
     console.log('render followers change');
@@ -218,7 +249,7 @@ export function ProfilePage() {
       console.log('followed', response.data);
       setFollowed(response.data);
     });
-  }, [userId, isFollowerDelete]);
+  }, [userId]);
 
   const checkProfileViewPermission = () => {
     if (user?.id === user_id) return true;
@@ -289,11 +320,7 @@ export function ProfilePage() {
             toggle={followerToggle}
           >
             <ModalClose headlineText={'Followers'} onClose={followerToggle} />
-            <div className={style.followers_listbox}>
-              {followers.map((followerItem) => (
-                <FollowerItem key={followerItem.id} followerItem={followerItem} />
-              ))}
-            </div>
+            <FollowersItems setFollowed={setFollowers} followed={followers} />
           </Modal>
 
           <Modal
@@ -303,11 +330,7 @@ export function ProfilePage() {
             toggle={followedToggle}
           >
             <ModalClose headlineText={'Followed'} onClose={followedToggle} />
-            <div className={style.followers_listbox}>
-              {followed.map((followedItem) => (
-                <FollowerItem key={followedItem.id} followerItem={followedItem} />
-              ))}
-            </div>
+            <FollowersItems setFollowed={setFollowed} followed={followed} />
           </Modal>
         </div>
       </>
