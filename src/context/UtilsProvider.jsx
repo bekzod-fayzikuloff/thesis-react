@@ -1,18 +1,18 @@
-import {createContext, useState} from 'react';
+import { createContext, useState } from 'react';
 
 const UtilsContext = createContext();
 
-const UtilsProvider = ({children}) => {
+const UtilsProvider = ({ children }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => {
     setModalOpen(!isModalOpen);
   };
 
   const changeFollowersState = () => {
-    setFollowerDelete(!isFollowerDelete)
-  }
+    setFollowerDelete(!isFollowerDelete);
+  };
 
-  const [isFollowerDelete, setFollowerDelete] = useState(false)
+  const [isFollowerDelete, setFollowerDelete] = useState(false);
 
   const contextData = {
     isModalOpen,
@@ -21,8 +21,7 @@ const UtilsProvider = ({children}) => {
     changeFollowersState
   };
 
-  return <UtilsContext.Provider
-    value={contextData}>{children}</UtilsContext.Provider>;
+  return <UtilsContext.Provider value={contextData}>{children}</UtilsContext.Provider>;
 };
-export {UtilsContext};
-export {UtilsProvider};
+export { UtilsContext };
+export { UtilsProvider };

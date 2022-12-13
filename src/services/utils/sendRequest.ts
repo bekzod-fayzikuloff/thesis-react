@@ -10,7 +10,12 @@ const sendData = async (resourceUrl: string, data: object) => {
   });
 };
 
-const sendDataAuthRequire = async (method: string, resourceUrl: string, data: object, authTokenAccess: any) => {
+const sendDataAuthRequire = async (
+  method: string,
+  resourceUrl: string,
+  data: object,
+  authTokenAccess: any
+) => {
   return await axios({
     method: 'DELETE',
     url: resourceUrl,
@@ -32,4 +37,4 @@ const getResponse = async (resourceUrl: string, authTokenAccess: string | null) 
   });
 };
 
-export {sendData, sendDataAuthRequire, getResponse};
+export { sendData, sendDataAuthRequire, getResponse };
