@@ -1,6 +1,5 @@
 import style from './Profile.module.scss';
 import defaultUserLogo from '../../assets/images/default_user.jpg';
-import { Button } from '@mui/material';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { useNavigate, useParams } from 'react-router-dom';
 import Modal from '../../common/ui/Modal';
@@ -12,18 +11,8 @@ import { API_URL } from '../../config';
 import jwt_decode from 'jwt-decode';
 import { InfinitySpin } from 'react-loader-spinner';
 import { UtilsContext } from '../../context/UtilsProvider';
-
-export type Media = {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-  file: string;
-};
-
-export interface IPost {
-  id: number;
-  medias: Media[];
-}
+import axios from 'axios';
+import { IFollower, IPost, IUserProfile } from '../../types';
 
 const deleteFollower = (followerId: number) => {
   sendDataAuthRequire(
@@ -182,28 +171,6 @@ const EditItem = (props: {
   );
 };
 
-export interface IUserProfile {
-  id: number;
-  username: string;
-  followersCount: number;
-  followedToCount: number;
-  postsCount: number;
-  createdAt: string;
-  updatedAt: string;
-  avatar: string | null;
-  description: string;
-  isPrivate: boolean;
-}
-
-export interface IFollower {
-  id: number;
-  follower: {
-    id: number;
-    avatar: null | string;
-    username: string;
-  };
-}
-
 const ModalClose = (props: { onClose: () => void; headlineText: string }) => {
   return (
     <div className={style.modal__close}>
@@ -227,8 +194,10 @@ export function ProfilePage() {
   const { logoutUser } = useContext(AuthContext);
   const { isFollowerDelete } = useContext(UtilsContext);
   const [followers, setFollowers] = useState<IFollower[]>([]);
+  const [currentUserFollowers, setCurrentUserFollowers] = useState<IFollower[]>([]);
   const [followed, setFollowed] = useState<IFollower[]>([]);
   const [user, setUser] = useState<IUserProfile | null>(null);
+  const [changeState, setChangeState] = useState(true);
   const navigate = useNavigate();
 
   const { isOpen: editIsOpen, toggle: editToggle } = useModal();
@@ -240,6 +209,69 @@ export function ProfilePage() {
   );
   const { userId } = useParams();
   const [isFound, setIsFound] = useState(true);
+
+  const unfollowUser = (id: number) => {
+    const selectProfile = currentUserFollowers.filter((user) => user.follower.id === id);
+    setChangeState(!changeState);
+    const user = selectProfile.pop();
+    if (user === undefined) return;
+    console.log('current user', user);
+
+    // @ts-ignore
+    setFollowers((prevState) => {
+      return prevState.filter((f) => f.follower.id !== user_id);
+    });
+
+    sendDataAuthRequire(
+      'DELETE',
+      `${API_URL}/api/followers/${user.id}/`,
+      {},
+      JSON.parse(localStorage.getItem('authToken') as string).access
+    ).then(() => {
+      // @ts-ignore
+      setUser((prevState) => ({
+        ...prevState,
+        followersCount: followers.length - 1
+      }));
+    });
+  };
+
+  const followUser = (id: number) => {
+    axios
+      .post(
+        `${API_URL}/api/followers/`,
+        { followTo: id },
+        {
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem('authToken') as string).access
+            }`
+          }
+        }
+      )
+      .then()
+      .catch();
+    // @ts-ignore
+    setFollowers((prevState) => {
+      console.log(prevState);
+      return [
+        ...prevState,
+        {
+          id: user?.id,
+          follower: { id: user_id, avatar: user?.avatar, username: username }
+        }
+      ];
+    });
+    // @ts-ignore
+    setUser((prevState) => ({
+      ...prevState,
+      followersCount: followers.length + 1
+    }));
+  };
+
+  function checkProfileFollow() {
+    return followers.filter((followerItem) => followerItem.follower.id === user_id).length > 0;
+  }
 
   useEffect(() => {
     getResponse(
@@ -282,6 +314,16 @@ export function ProfilePage() {
     });
   }, [userId]);
 
+  useEffect(() => {
+    console.log('user profile change');
+    getResponse(
+      `${API_URL}/api/profiles/${user_id}/followed/`,
+      JSON.parse(localStorage.getItem('authToken') as string).access
+    ).then((response) => {
+      setCurrentUserFollowers(response.data);
+    });
+  }, [changeState]);
+
   const checkProfileViewPermission = () => {
     if (user?.id === user_id) return true;
     else if (followers.filter((followerItem) => followerItem.follower.id === user_id).length > 0)
@@ -308,21 +350,10 @@ export function ProfilePage() {
                     <>
                       <SettingsOutlinedIcon onClick={() => editToggle()} />
                     </>
+                  ) : checkProfileFollow() ? (
+                    <p onClick={() => unfollowUser(Number(userId))}>Unfollow</p>
                   ) : (
-                    <Button
-                      style={{
-                        padding: '1px 17px',
-                        marginLeft: '17pt',
-                        marginRight: '7pt'
-                      }}
-                      variant="outlined"
-                      sx={{
-                        fontSize: 12
-                      }}
-                      onClick={() => navigate('/profile/edit')}
-                    >
-                      Follow
-                    </Button>
+                    <p onClick={() => followUser(Number(userId))}>Follow</p>
                   )}
                 </div>
                 <div className={style.profile__description}>
