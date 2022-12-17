@@ -37,7 +37,7 @@ const PagePrivate = () => {
   );
 };
 
-const FollowerItem = (props: {
+export const FollowerItem = (props: {
   followerItem: IFollower;
   onRemove: () => void;
   onClose: () => void;
