@@ -33,7 +33,11 @@ export function Sidebar() {
         onClick={() => makeNavigation(`/profile/${user_id}`)}
       />
       <SidebarItem toLink="#" toRepr="Search" onClick={handleClick} />
-      <Modal style={{ width: '480px' }} isOpen={searchOpen} toggle={searchToggle}>
+      <Modal
+        style={{ width: '480px', height: '400px', overflowY: 'scroll' }}
+        isOpen={searchOpen}
+        toggle={searchToggle}
+      >
         <SearchSection modalClose={searchToggle} />
       </Modal>
       <div className={style.side__anchor}>

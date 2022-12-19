@@ -31,3 +31,15 @@ export interface IPost {
   id: number;
   medias: Media[];
 }
+
+export interface IFeedPost {
+  id: number;
+  createdAt: string;
+  creatorUsername: string;
+  creatorAvatar: string | null;
+  creatorId: number;
+  description: string;
+  isActive?: boolean;
+  medias: Media[];
+  updatedAt: string;
+}

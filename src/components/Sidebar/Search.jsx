@@ -37,7 +37,13 @@ export function SearchItem({ user, onClose }) {
             height: '36px',
             borderRadius: '50%'
           }}
-          src={user.avatar ? API_URL?.concat(user.avatar) : defaultUserLogo}
+          src={
+            user.avatar
+              ? user.avatar.includes('media')
+                ? user.avatar
+                : API_URL?.concat(user.avatar)
+              : defaultUserLogo
+          }
           alt=""
         />
       </div>
