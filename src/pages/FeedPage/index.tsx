@@ -1,14 +1,65 @@
 import style from './Feed.module.scss';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getResponse } from '../../services/utils/sendRequest';
 import { API_URL } from '../../config';
 import jwt_decode from 'jwt-decode';
 import { IFeedPost } from '../../types';
 import defaultUserLogo from '../../assets/images/default_user.jpg';
 import { useNavigate } from 'react-router-dom';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import RedoIcon from '@mui/icons-material/Redo';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import SendIcon from '@mui/icons-material/Send';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import axios from 'axios';
 
 const FeedItem = ({ feedPost }: { feedPost: IFeedPost }) => {
+  const [commentText, setCommentText] = useState('');
+  const [likesQuantity, setLikesQuantity] = useState(feedPost.likes);
+  const [isLiked, setIsLiked] = useState(feedPost.postIsLiked);
+  const [commentQuantity, setCommentQuantity] = useState(feedPost.commentsQuantity);
   const navigate = useNavigate();
+
+  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setCommentText((e.target as HTMLInputElement).value);
+  };
+
+  const handleLikeSubmit = () => {
+    setLikesQuantity((prevState) => prevState + 1);
+    setIsLiked(true);
+  };
+
+  const handleUnlikeSubmit = () => {
+    setLikesQuantity((prevState) => prevState - 1);
+    setIsLiked(false);
+  };
+
+  const handleCommentSubmit = () => {
+    if (commentText === '') {
+      return;
+    }
+    axios
+      .post(
+        `${API_URL}/api/comments/`,
+        {
+          post: feedPost.id,
+          content: commentText
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem('authToken') as string).access
+            }`
+          }
+        }
+      )
+      .then((r) => console.log(r))
+      .catch();
+    setCommentText('');
+    setCommentQuantity((prevState) => prevState + 1);
+  };
+
   return (
     <div className={style.feed__item}>
       <div className={style.feed__headline}>
@@ -29,21 +80,51 @@ const FeedItem = ({ feedPost }: { feedPost: IFeedPost }) => {
       </div>
       <div className={style.post_reaction}>
         <div className={style.reaction}>
-          <span>1</span>
-          <span>2</span>
+          {isLiked ? (
+            <FavoriteIcon
+              style={{
+                filter:
+                  'invert(9%) sepia(98%) saturate(6010%) hue-rotate(2deg) brightness(98%) contrast(112%)'
+              }}
+              onClick={handleUnlikeSubmit}
+            />
+          ) : (
+            <FavoriteBorderIcon onClick={handleLikeSubmit} />
+          )}
+          <ChatBubbleOutlineIcon onClick={() => navigate(`/p/${feedPost.id}`)} />
+          <RedoIcon />
         </div>
-        <div className={style.send}>
-          <p>3</p>
+        <div className={style.bookmark}>
+          <BookmarkBorderIcon />
         </div>
       </div>
-      <p>likes: {111}</p>
+      <p>likes: {likesQuantity}</p>
       <p>
         {feedPost.creatorUsername}: {feedPost.description}
       </p>
-      <p>Comments: {111}</p>
+      <p>Comments: {commentQuantity}</p>
       <div className={style.comment__content}>
-        <input type={'text'} />
-        <input type={'submit'} />
+        <input
+          placeholder={'Добавьте комментарий...'}
+          value={commentText}
+          onChange={handleChange}
+          type={'text'}
+        />
+        <SendIcon
+          style={
+            commentText
+              ? {
+                  filter:
+                    'invert(43%) sepia(63%) saturate(561%) hue-rotate(171deg) brightness(93%) contrast(90%)',
+                  cursor: 'pointer'
+                }
+              : {
+                  filter:
+                    'invert(90%) sepia(4%) saturate(7%) hue-rotate(331deg) brightness(97%) contrast(76%)'
+                }
+          }
+          onClick={handleCommentSubmit}
+        />
       </div>
     </div>
   );

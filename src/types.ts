@@ -42,4 +42,7 @@ export interface IFeedPost {
   isActive?: boolean;
   medias: Media[];
   updatedAt: string;
+  likes: number;
+  commentsQuantity: number;
+  postIsLiked: boolean;
 }

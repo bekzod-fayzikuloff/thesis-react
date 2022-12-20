@@ -23,7 +23,7 @@
   background-color: #ffffff;
   border-radius: 10px;
   border: 0.5px solid #DBDBDB;
-  height: 800px;
+  height: 760px;
   width: 470px;
   position: relative;
 
@@ -61,26 +61,62 @@
 
   .post_reaction {
     display: flex;
-    justify-content: space-around;
-    background-color: red;
+    justify-content: space-between;
     width: 100%;
     height: 21pt;
     align-items: center;
 
     .reaction {
-      width: 70%;
+      margin-left: 7pt;
 
-      span {
+      svg {
+        cursor: pointer;
         margin-right: 11pt;
+      }
+
+      svg:hover {
+        filter: invert(90%) sepia(4%) saturate(7%) hue-rotate(331deg) brightness(97%) contrast(76%);
+      }
+
+      svg:active {
+        filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(254deg) brightness(103%) contrast(105%);
       }
     }
   }
 
+  .bookmark {
+    svg {
+      cursor: pointer;
+      margin-right: 5pt;
+    }
+  }
+
   .comment__content {
+    padding: 5pt;
     position: absolute;
     bottom: 0;
-    width: 100%;
+    width: 97.4%;
     display: flex;
-    background-color: red;
+    border-top: 0.5px solid #DBDBDB;
+
+    input {
+      border: none;
+      width: 90%;
+    }
+
+    input:focus {
+      outline: none;
+    }
+
+    svg:hover {
+      filter: invert(90%) sepia(4%) saturate(7%) hue-rotate(331deg) brightness(97%) contrast(76%);
+    }
+
+    svg {
+      height: 19px;
+      margin-left: 11pt;
+      margin-bottom: 4pt;
+      transform: rotate(-45deg);
+    }
   }
 }
