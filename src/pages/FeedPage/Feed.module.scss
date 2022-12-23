@@ -23,9 +23,8 @@
   background-color: #ffffff;
   border-radius: 10px;
   border: 0.5px solid #DBDBDB;
-  height: 760px;
+  min-height: 740px;
   width: 470px;
-  position: relative;
 
   .feed__headline {
     height: 40pt;
@@ -89,11 +88,19 @@
       cursor: pointer;
       margin-right: 5pt;
     }
+
+    svg:hover {
+      filter: invert(90%) sepia(4%) saturate(7%) hue-rotate(331deg) brightness(97%) contrast(76%);
+    }
+
+    svg:active {
+      filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(254deg) brightness(103%) contrast(105%);
+    }
   }
 
   .comment__content {
+    margin-top: 16pt;
     padding: 5pt;
-    position: absolute;
     bottom: 0;
     width: 97.4%;
     display: flex;

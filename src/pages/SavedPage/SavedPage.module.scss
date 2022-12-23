@@ -1,0 +1,89 @@
+.root {
+  background-color: #FBFCFE;
+  height: 100vh;
+  width: 100%;
+  margin-left: 17%;
+
+  .detail__group {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    .groups__stack {
+      width: 70%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    div > div {
+      cursor: pointer;
+      border: 1px solid grey;
+      border-radius: 4pt;
+      height: 350px;
+      width: 100%;
+      background-size: cover;
+      background: no-repeat center center;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+
+      .saved__anchor {
+        border-radius: 0;
+        border: none;
+        border-bottom: 1px solid grey;
+        text-align: center;
+        height: 24pt;
+        bottom: 0;
+
+        p:hover {
+          color: #4876f8;
+        }
+      }
+    }
+
+  }
+}
+
+
+.saved__head {
+  display: flex;
+  align-items: center;
+  height: 37pt;
+  border-bottom: 1px solid grey;
+  margin-bottom: 20px;
+
+  svg {
+    margin-left: 9pt;
+
+  }
+}
+
+.inbox__modal {
+  width: 83.27vw;
+  height: 100%;
+}
+
+
+.add__group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    text-align: center;
+    border-radius: 50%;
+    height: 50%;
+    width: 50%;
+    cursor: pointer;
+
+    svg {
+      font-size: 46pt;
+    }
+
+    svg:hover {
+      filter: invert(66%) sepia(75%) saturate(1447%) hue-rotate(357deg) brightness(106%) contrast(88%);
+    }
+  }
+}

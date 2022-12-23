@@ -34,7 +34,11 @@ export function Sidebar() {
       />
       <SidebarItem toLink="#" toRepr="Search" onClick={handleClick} />
       <Modal
-        style={{ width: '480px', height: '400px', overflowY: 'scroll' }}
+        style={{
+          width: '480px',
+          height: '400px',
+          overflowY: 'scroll'
+        }}
         isOpen={searchOpen}
         toggle={searchToggle}
       >

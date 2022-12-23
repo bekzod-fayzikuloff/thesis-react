@@ -12,13 +12,19 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import SendIcon from '@mui/icons-material/Send';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import axios from 'axios';
 
 const FeedItem = ({ feedPost }: { feedPost: IFeedPost }) => {
   const [commentText, setCommentText] = useState('');
   const [likesQuantity, setLikesQuantity] = useState(feedPost.likes);
   const [isLiked, setIsLiked] = useState(feedPost.postIsLiked);
+  const [isSaved, setIsSaved] = useState(feedPost.postIsSaved);
   const [commentQuantity, setCommentQuantity] = useState(feedPost.commentsQuantity);
+  const [recentComments, setRecentComments] = useState<string[]>([]);
+  const { username }: { username: string } = jwt_decode(
+    localStorage.getItem('authToken') as string
+  );
   const navigate = useNavigate();
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -33,6 +39,14 @@ const FeedItem = ({ feedPost }: { feedPost: IFeedPost }) => {
   const handleUnlikeSubmit = () => {
     setLikesQuantity((prevState) => prevState - 1);
     setIsLiked(false);
+  };
+
+  const addBookmark = () => {
+    setIsSaved(true);
+  };
+
+  const removeBookmark = () => {
+    setIsSaved(false);
   };
 
   const handleCommentSubmit = () => {
@@ -56,6 +70,7 @@ const FeedItem = ({ feedPost }: { feedPost: IFeedPost }) => {
       )
       .then((r) => console.log(r))
       .catch();
+    setRecentComments((prevState) => [...prevState, commentText]);
     setCommentText('');
     setCommentQuantity((prevState) => prevState + 1);
   };
@@ -95,7 +110,11 @@ const FeedItem = ({ feedPost }: { feedPost: IFeedPost }) => {
           <RedoIcon />
         </div>
         <div className={style.bookmark}>
-          <BookmarkBorderIcon />
+          {isSaved ? (
+            <BookmarkIcon onClick={removeBookmark} />
+          ) : (
+            <BookmarkBorderIcon onClick={addBookmark} />
+          )}
         </div>
       </div>
       <p>likes: {likesQuantity}</p>
@@ -103,6 +122,11 @@ const FeedItem = ({ feedPost }: { feedPost: IFeedPost }) => {
         {feedPost.creatorUsername}: {feedPost.description}
       </p>
       <p>Comments: {commentQuantity}</p>
+      {recentComments.map((comment, key) => (
+        <p key={key}>
+          {username}: {comment}
+        </p>
+      ))}
       <div className={style.comment__content}>
         <input
           placeholder={'Добавьте комментарий...'}

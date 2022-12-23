@@ -378,6 +378,11 @@ export function ProfilePage() {
             isOpen={editIsOpen}
             toggle={editToggle}
           >
+            <EditItem
+              className={style.logout__item}
+              onClick={() => navigate('/profile/saved/')}
+              text="Saved"
+            />
             <EditItem className={style.logout__item} onClick={logoutUser} text="Logout" />
           </Modal>
           <Modal

@@ -12,6 +12,7 @@ import { ProfilePage } from './pages/ProfilePage';
 import { InboxLayout } from './layouts/Inbox';
 import { InboxEmpty, MessageArea } from './pages/InboxPage';
 import { UtilsProvider } from './context/UtilsProvider';
+import { SavedDetailPage, SavedPage } from './pages/SavedPage';
 
 function App() {
   return (
@@ -22,7 +23,9 @@ function App() {
             <Route path="/" element={<PrivateRoute />}>
               <Route path="/" element={<MainLayout />}>
                 <Route index element={<FeedPage />} />
+                <Route path={'/saved/:savedId'} element={<SavedDetailPage />} />
                 <Route path={'/profile/edit'} element={<h1>Edit</h1>} />
+                <Route path={'/profile/saved'} element={<SavedPage />} />
                 <Route path={'/profile/:userId'} element={<ProfilePage />} />
                 <Route path="/" element={<InboxLayout />}>
                   <Route path="/inbox" element={<InboxEmpty />} />

@@ -45,4 +45,15 @@ export interface IFeedPost {
   likes: number;
   commentsQuantity: number;
   postIsLiked: boolean;
+  postIsSaved: boolean;
+}
+
+export interface IPostGroup {
+  creator: number;
+  id: number;
+  postsThumbnail: {
+    id: number;
+    medias: Media[];
+  };
+  title: string;
 }
