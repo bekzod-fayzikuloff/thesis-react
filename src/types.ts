@@ -57,3 +57,14 @@ export interface IPostGroup {
   };
   title: string;
 }
+
+export interface IPostGroupDetail {
+  id: number;
+  posts: {
+    id: number;
+    comments: number;
+    likes: number;
+    medias: Media[];
+  }[];
+  title: string;
+}
