@@ -46,6 +46,7 @@ export interface IFeedPost {
   commentsQuantity: number;
   postIsLiked: boolean;
   postIsSaved: boolean;
+  postIsSavedGroups: number [];
 }
 
 export interface IPostGroup {
