@@ -1,29 +1,28 @@
 import axios from 'axios';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
-import {API_URL} from '../../config';
-import {IPostGroup, IPostGroupDetail} from '../../types';
+import { API_URL } from '../../config';
+import { IPostGroup, IPostGroupDetail } from '../../types';
 import style from './SavedPage.module.scss';
-import {useNavigate, useParams} from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Modal from '../../common/ui/Modal';
 import useModal from '../../hooks/useModal';
 import AddIcon from '@mui/icons-material/Add';
-import {Button, TextField} from '@mui/material';
+import { Button, TextField } from '@mui/material';
 
 const SavedPageHeader = (props: { backRef: string }) => {
   const navigate = useNavigate();
   return (
     <header className={style.saved__head}>
-      <ArrowBackIcon style={{cursor: 'pointer'}}
-                     onClick={() => navigate(props.backRef)}/>
+      <ArrowBackIcon style={{ cursor: 'pointer' }} onClick={() => navigate(props.backRef)} />
     </header>
   );
 };
 
 export const SavedPage = () => {
-  const {isOpen: addIsOpen, toggle: addToggle} = useModal();
-  const {user_id: currentUserId}: { user_id: number } = jwt_decode(
+  const { isOpen: addIsOpen, toggle: addToggle } = useModal();
+  const { user_id: currentUserId }: { user_id: number } = jwt_decode(
     localStorage.getItem('authToken') as string
   );
   const [postsGroups, setPostsGroups] = useState<IPostGroup[]>([]);
@@ -56,14 +55,14 @@ export const SavedPage = () => {
   };
   return (
     <div className={style.root}>
-      <SavedPageHeader backRef={`/profile/${currentUserId}`}/>
+      <SavedPageHeader backRef={`/profile/${currentUserId}`} />
       <div className={style.detail__group}>
         <div className={style.groups__stack}>
           <div className={style.add__group}>
             <p onClick={addToggle}>
               <span>Add new posts group</span>
-              <br/>
-              <AddIcon/>
+              <br />
+              <AddIcon />
             </p>
           </div>
 
@@ -74,8 +73,8 @@ export const SavedPage = () => {
                 style={
                   postG.postsThumbnail && Object.keys(postG.postsThumbnail).length !== 0
                     ? {
-                      backgroundImage: `url(${API_URL}${postG.postsThumbnail.medias[0].file})`
-                    }
+                        backgroundImage: `url(${API_URL}${postG.postsThumbnail.medias[0].file})`
+                      }
                     : {}
                 }
                 key={postG.id}
@@ -99,14 +98,14 @@ export const SavedPage = () => {
         }}
       >
         <TextField
-          style={{width: '100%'}}
+          style={{ width: '100%' }}
           onChange={(e) => setGroupName(e.target.value)}
           value={groupName}
           id="standard-basic"
           label="Posts collection name"
           variant="standard"
         />
-        <br/>
+        <br />
         <div
           style={{
             display: 'flex',
@@ -116,7 +115,7 @@ export const SavedPage = () => {
         >
           <Button
             variant={'contained'}
-            endIcon={<AddIcon/>}
+            endIcon={<AddIcon />}
             onClick={() => {
               addToggle();
               addGroupHandler();
@@ -132,7 +131,7 @@ export const SavedPage = () => {
 
 export const SavedDetailPage = () => {
   const [savedGroup, setSavedGroup] = useState<IPostGroupDetail>();
-  const {savedId} = useParams();
+  const { savedId } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
     axios.get(`${API_URL}/api/posts-groups/${savedId}`).then((response) => {
@@ -142,15 +141,17 @@ export const SavedDetailPage = () => {
   }, []);
   return (
     <div className={style.root}>
-      <SavedPageHeader backRef={`/profile/saved/`}/>
+      <SavedPageHeader backRef={`/profile/saved/`} />
       <div className={style.detail__group}>
         <div className={style.groups__stack}>
           {savedGroup?.posts.map((post) => {
             return (
-              <div onClick={() => navigate(`/p/${post.id}`)}
-                   className={style.detail__post}
-                   key={post.id}>
-                <img src={`${API_URL}${post.medias[0].file}`} alt=""/>
+              <div
+                onClick={() => navigate(`/p/${post.id}`)}
+                className={style.detail__post}
+                key={post.id}
+              >
+                <img src={`${API_URL}${post.medias[0].file}`} alt="" />
               </div>
             );
           })}
