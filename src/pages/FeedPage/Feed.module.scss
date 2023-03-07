@@ -149,13 +149,27 @@
     border-bottom-left-radius: 14pt;
 
     .right {
+      padding: 3pt;
+      cursor: pointer;
       position: absolute;
       right: 19%;
+      border-radius: 50%;
+    }
+
+    .right:hover {
+      background-color: #e8e0e0;
     }
 
     .left {
+      padding: 3pt;
+      cursor: pointer;
       position: absolute;
       left: 36%;
+      border-radius: 50%;
+    }
+
+    .left:hover {
+      background-color: #e8e0e0;
     }
   }
 
@@ -164,17 +178,26 @@
   }
 
   .story {
-    background-color: #d9bfbf;
-    min-height: 48px;
-    min-width: 48px;
-    border-radius: 50%;
+    p {
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    img {
+      cursor: pointer;
+      min-height: 48px;
+      min-width: 48px;
+      max-height: 48px;
+      max-width: 48px;
+      border-radius: 50%;
+    }
   }
 
   .story:not(:last-child) {
-    margin-right: 8pt;
+    margin-right: 12pt;
   }
 
   .story:first-child {
-    margin-left: 8pt;
+    margin-left: 12pt;
   }
 }
