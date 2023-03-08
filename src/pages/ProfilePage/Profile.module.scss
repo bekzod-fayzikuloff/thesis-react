@@ -227,3 +227,26 @@ main {
 .logout__item p:hover {
   color: #f18484;
 }
+
+.follow__btn {
+  cursor: pointer;
+  font-size: 16px !important;
+  padding: 1pt 5pt;
+  font-weight: 500 !important;
+  border: 1.5px solid grey;
+  border-radius: 2px;
+}
+
+.follow__btn:hover {
+  transition-delay: .1s;
+  padding: 1pt 5pt;
+  color: #ffffff !important;
+  border: 1.5px solid #72e7df;
+  background-color: #72e7df;
+
+}
+
+.unfollow:hover {
+  border: 1.5px solid #e79999;
+  background-color: #e79999;
+}

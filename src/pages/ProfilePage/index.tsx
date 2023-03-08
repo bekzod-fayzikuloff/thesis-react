@@ -351,9 +351,16 @@ export function ProfilePage() {
                       <SettingsOutlinedIcon onClick={() => editToggle()} />
                     </>
                   ) : checkProfileFollow() ? (
-                    <p onClick={() => unfollowUser(Number(userId))}>Unfollow</p>
+                    <p
+                      className={`${style.follow__btn} ${style.unfollow}`}
+                      onClick={() => unfollowUser(Number(userId))}
+                    >
+                      Unfollow
+                    </p>
                   ) : (
-                    <p onClick={() => followUser(Number(userId))}>Follow</p>
+                    <p className={style.follow__btn} onClick={() => followUser(Number(userId))}>
+                      Follow
+                    </p>
                   )}
                 </div>
                 <div className={style.profile__description}>
