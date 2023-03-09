@@ -97,35 +97,6 @@
       filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(254deg) brightness(103%) contrast(105%);
     }
   }
-
-  .comment__content {
-    margin-top: 16pt;
-    padding: 5pt;
-    bottom: 0;
-    width: 97.4%;
-    display: flex;
-    border-top: 0.5px solid #DBDBDB;
-
-    input {
-      border: none;
-      width: 90%;
-    }
-
-    input:focus {
-      outline: none;
-    }
-
-    svg:hover {
-      filter: invert(90%) sepia(4%) saturate(7%) hue-rotate(331deg) brightness(97%) contrast(76%);
-    }
-
-    svg {
-      height: 19px;
-      margin-left: 11pt;
-      margin-bottom: 4pt;
-      transform: rotate(-45deg);
-    }
-  }
 }
 
 

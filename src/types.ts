@@ -29,6 +29,9 @@ export type Media = {
 
 export interface IPost {
   id: number;
+  likes: number;
+  comments: number;
+  description: string;
   medias: Media[];
 }
 

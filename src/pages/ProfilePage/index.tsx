@@ -13,6 +13,7 @@ import { InfinitySpin } from 'react-loader-spinner';
 import { UtilsContext } from '../../context/UtilsProvider';
 import axios from 'axios';
 import { IFollower, IPost, IUserProfile } from '../../types';
+import PostDetail from '../../components/PostDetail';
 
 const deleteFollower = (followerId: number) => {
   sendDataAuthRequire(
@@ -127,6 +128,9 @@ const FollowersItems = ({
 
 const PostContainer = (props: { navigate: any }) => {
   const [posts, setPosts] = useState<IPost[]>([]);
+  const { isOpen: postIsOpen, toggle: postToggle } = useModal();
+  const [currentPost, setCurrentPost] = useState<null | IPost>(null);
+
   const { userId } = useParams();
   useEffect(() => {
     getResponse(
@@ -137,23 +141,38 @@ const PostContainer = (props: { navigate: any }) => {
     });
   }, [props.navigate]);
 
+  const handlePost = (post: IPost) => {
+    setCurrentPost(post);
+    postToggle();
+  };
+
   return (
-    <div className={style.grid__wrapper}>
-      <div className={style.grid}>
-        {posts.map((post: IPost) => {
-          return (
-            <div key={post?.id}>
-              <img
-                onClick={() => props.navigate(`/p/${post?.id}`)}
-                src={post?.medias[0]?.file}
-                referrerPolicy="no-referrer"
-                alt=""
-              />
-            </div>
-          );
-        })}
+    <>
+      <div className={style.grid__wrapper}>
+        <div className={style.grid}>
+          {posts.map((post: IPost) => {
+            return (
+              <div key={post?.id}>
+                <img
+                  onClick={() => handlePost(post)}
+                  src={post?.medias[0]?.file}
+                  referrerPolicy="no-referrer"
+                  alt=""
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+      <Modal
+        className={style.inbox__modal}
+        style={{ width: '75%', height: '75%', padding: 0 }}
+        isOpen={postIsOpen}
+        toggle={postToggle}
+      >
+        <PostDetail post={currentPost} />
+      </Modal>
+    </>
   );
 };
 
@@ -389,6 +408,11 @@ export function ProfilePage() {
               className={style.logout__item}
               onClick={() => navigate('/profile/saved/')}
               text="Saved"
+            />
+            <EditItem
+              className={style.logout__item}
+              onClick={() => navigate('/profile/edit/')}
+              text="Settings"
             />
             <EditItem className={style.logout__item} onClick={logoutUser} text="Logout" />
           </Modal>

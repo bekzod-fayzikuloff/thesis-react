@@ -10,10 +10,10 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import RedoIcon from '@mui/icons-material/Redo';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import SendIcon from '@mui/icons-material/Send';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import axios from 'axios';
+import { SendComment } from '../../components/PostDetail';
+import { createComment } from '../../services/posts';
 
 const FeedItem = ({ feedPost }: { feedPost: IFeedPost }) => {
   const [commentText, setCommentText] = useState('');
@@ -56,21 +56,7 @@ const FeedItem = ({ feedPost }: { feedPost: IFeedPost }) => {
     if (commentText === '') {
       return;
     }
-    axios
-      .post(
-        `${API_URL}/api/comments/`,
-        {
-          post: feedPost.id,
-          content: commentText
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem('authToken') as string).access
-            }`
-          }
-        }
-      )
+    createComment(feedPost?.id, commentText)
       .then((r) => console.log(r))
       .catch();
     setRecentComments((prevState) => [...prevState, commentText]);
@@ -130,29 +116,11 @@ const FeedItem = ({ feedPost }: { feedPost: IFeedPost }) => {
           {username}: {comment}
         </p>
       ))}
-      <div className={style.comment__content}>
-        <input
-          placeholder={'Добавьте комментарий...'}
-          value={commentText}
-          onChange={handleChange}
-          type={'text'}
-        />
-        <SendIcon
-          style={
-            commentText
-              ? {
-                  filter:
-                    'invert(43%) sepia(63%) saturate(561%) hue-rotate(171deg) brightness(93%) contrast(90%)',
-                  cursor: 'pointer'
-                }
-              : {
-                  filter:
-                    'invert(90%) sepia(4%) saturate(7%) hue-rotate(331deg) brightness(97%) contrast(76%)'
-                }
-          }
-          onClick={handleCommentSubmit}
-        />
-      </div>
+      <SendComment
+        commentText={commentText}
+        handleChange={handleChange}
+        handleCommentSubmit={handleCommentSubmit}
+      />
     </div>
   );
 };
@@ -213,6 +181,7 @@ const FriendsList = ({ userId }: { userId: number }) => {
     </div>
   );
 };
+
 export function FeedPage() {
   const [feeds, setFeeds] = useState<IFeedPost[]>([]);
   const { user_id }: { user_id: number } = jwt_decode(localStorage.getItem('authToken') as string);
