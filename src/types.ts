@@ -32,6 +32,7 @@ export interface IPost {
   likes: number;
   comments: number;
   description: string;
+  creatorUsername: string;
   medias: Media[];
 }
 
@@ -71,4 +72,13 @@ export interface IPostGroupDetail {
     medias: Media[];
   }[];
   title: string;
+}
+
+export interface IComment {
+  id: number;
+  content: string;
+  createdAt: string;
+  avatar: string | null;
+  username: number;
+  creatorId: number;
 }

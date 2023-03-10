@@ -61,10 +61,46 @@
 }
 
 .comments {
-  height: 70%;
+  height: 75%;
   overflow-y: scroll;
 }
 
 .post__action {
   border-top: solid 0.5px #eae9e9;
+}
+
+.post__desc_text {
+  padding: 2pt;
+  border-bottom: solid 0.7px #949393;
+}
+
+.comment__block {
+  padding: 4pt;
+  display: flex;
+
+  .comment__avatar {
+    margin-bottom: 1pt;
+    margin-right: 4pt;
+    margin-left: 2pt;
+
+    img {
+      cursor: pointer;
+      border-radius: 50%;
+      max-width: 32px;
+      max-height: 32px;
+    }
+  }
+
+  .comment__main {
+    span {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1f1919;
+      cursor: pointer;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
 }

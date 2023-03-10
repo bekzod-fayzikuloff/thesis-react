@@ -1,10 +1,33 @@
-import { IPost } from '../../types';
+import { IComment, IPost } from '../../types';
 import style from './PostDetail.module.scss';
 import SendIcon from '@mui/icons-material/Send';
 import React, { useEffect, useState } from 'react';
 import { createComment } from '../../services/posts';
 import { getResponse } from '../../services/utils/sendRequest';
 import { API_URL } from '../../config';
+import defaultUserLogo from '../../assets/images/default_user.jpg';
+import { useNavigate } from 'react-router-dom';
+
+function CommentItem(props: { comment: IComment }) {
+  const { comment } = props;
+  const navigate = useNavigate();
+
+  return (
+    <div className={style.comment__block}>
+      <div className={style.comment__avatar}>
+        <img
+          onClick={() => navigate(`/profile/${comment.creatorId}`)}
+          src={comment.avatar ? API_URL?.concat(comment.avatar) : defaultUserLogo}
+          alt="comment creator"
+        />
+      </div>
+      <div className={style.comment__main}>
+        <span onClick={() => navigate(`/profile/${comment.creatorId}`)}>{comment.username}</span>
+        <p>{comment.content.slice(0, 35)}</p>
+      </div>
+    </div>
+  );
+}
 
 export function SendComment(props: any) {
   return (
@@ -38,17 +61,16 @@ export default function PostDetail(props: { post: IPost | null }) {
   const [commentText, setCommentText] = useState('');
 
   const [postDetailed, setPostDetailed] = useState<null | IPost>(null);
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState<IComment[]>([]);
   const [commentQuantity, setCommentQuantity] = useState<undefined | number>(undefined);
 
   useEffect(() => {
-    console.log('render');
     getResponse(
       `${API_URL}/api/posts/${props.post?.id}/`,
       JSON.parse(localStorage.getItem('authToken') as string).access
     ).then((response) => {
       setPostDetailed(response.data);
-      setCommentQuantity(response.data.comments);
+      setCommentQuantity(response.data.commentsQuantity);
     });
 
     getResponse(
@@ -86,16 +108,17 @@ export default function PostDetail(props: { post: IPost | null }) {
       </div>
       <div className={style.post__desc}>
         <div className={style.headline}>
-          <p>Headline</p>
+          <p>{postDetailed?.creatorUsername}</p>
+        </div>
+        <div className={style.post__desc_text}>
+          <p>{postDetailed?.description}</p>
         </div>
         <div className={style.comments}>
-          <p>{postDetailed?.description}</p>
-          {comments.map((c: any) => (
-            <p key={c.id}>{c.content}</p>
+          {comments.map((c: IComment) => (
+            <CommentItem key={c.id} comment={c} />
           ))}
         </div>
         <div className={style.post__action}>
-          <p>PostAction</p>
           <p>comments {commentQuantity} </p>
           <SendComment
             style={{ paddingRight: '1pt' }}
