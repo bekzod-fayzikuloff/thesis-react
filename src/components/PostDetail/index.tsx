@@ -23,7 +23,7 @@ function CommentItem(props: { comment: IComment }) {
       </div>
       <div className={style.comment__main}>
         <span onClick={() => navigate(`/profile/${comment.creatorId}`)}>{comment.username}</span>
-        <p>{comment.content.slice(0, 35)}</p>
+        <p>{comment.content}</p>
       </div>
     </div>
   );

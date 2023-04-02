@@ -92,6 +92,8 @@
   }
 
   .comment__main {
+    word-break: break-word;
+
     span {
       font-size: 16px;
       font-weight: 600;
