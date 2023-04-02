@@ -117,6 +117,7 @@ const FeedItem = ({ feedPost }: { feedPost: IFeedPost }) => {
         </p>
       ))}
       <SendComment
+        className={style.send__comment}
         commentText={commentText}
         handleChange={handleChange}
         handleCommentSubmit={handleCommentSubmit}

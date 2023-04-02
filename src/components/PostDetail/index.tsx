@@ -7,6 +7,9 @@ import { getResponse } from '../../services/utils/sendRequest';
 import { API_URL } from '../../config';
 import defaultUserLogo from '../../assets/images/default_user.jpg';
 import { useNavigate } from 'react-router-dom';
+import RedoIcon from '@mui/icons-material/Redo';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 function CommentItem(props: { comment: IComment }) {
   const { comment } = props;
@@ -31,7 +34,10 @@ function CommentItem(props: { comment: IComment }) {
 
 export function SendComment(props: any) {
   return (
-    <div style={props.style && props.style} className={style.comment__content}>
+    <div
+      style={props.style && props.style}
+      className={`${style.comment__content} ${props.className}`}
+    >
       <input
         placeholder={'Добавьте комментарий...'}
         value={props.commentText}
@@ -114,12 +120,17 @@ export default function PostDetail(props: { post: IPost | null }) {
           <p>{postDetailed?.description}</p>
         </div>
         <div className={style.comments}>
+          <p>comments {commentQuantity} </p>
           {comments.map((c: IComment) => (
             <CommentItem key={c.id} comment={c} />
           ))}
         </div>
         <div className={style.post__action}>
-          <p>comments {commentQuantity} </p>
+          <div className={style.actions__items}>
+            <FavoriteIcon />
+            <RedoIcon />
+            <BookmarkIcon />
+          </div>
           <SendComment
             style={{ paddingRight: '1pt' }}
             commentText={commentText}
