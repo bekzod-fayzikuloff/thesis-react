@@ -1,21 +1,21 @@
-import {IComment, IPost} from '../../types';
+import { IComment, IPost } from '../../types';
 import style from './PostDetail.module.scss';
 import SendIcon from '@mui/icons-material/Send';
-import React, {useEffect, useState} from 'react';
-import {createComment} from '../../services/posts';
-import {getResponse} from '../../services/utils/sendRequest';
-import {API_URL} from '../../config';
+import React, { useEffect, useState } from 'react';
+import { createComment } from '../../services/posts';
+import { getResponse } from '../../services/utils/sendRequest';
+import { API_URL } from '../../config';
 import defaultUserLogo from '../../assets/images/default_user.jpg';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import RedoIcon from '@mui/icons-material/Redo';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import {toRepresent} from '../../services/utils/date';
+import { toRepresent } from '../../services/utils/date';
 
 function CommentItem(props: { comment: IComment }) {
-  const {comment} = props;
+  const { comment } = props;
   const navigate = useNavigate();
-  const [action, setAction] = useState(false)
+  const [action, setAction] = useState(false);
 
   const dateDiff = (date1: Date, date2: Date) => {
     // @ts-ignore
@@ -36,19 +36,14 @@ function CommentItem(props: { comment: IComment }) {
         onMouseLeave={() => setAction(false)}
         className={style.comment__main}
       >
-        <span
-          onClick={() => navigate(`/profile/${comment.creatorId}`)}>{comment.username}</span>
+        <span onClick={() => navigate(`/profile/${comment.creatorId}`)}>{comment.username}</span>
         <p>{comment.content}</p>
         <p className={style.comment__created}>
           {dateDiff(new Date(), new Date(comment.createdAt))}
           {/*<span className={style.comment__reply}>*/}
           {/*  Ответить*/}
           {/*</span> // TODO: Add answer to comments*/}
-          {action &&
-            <span className={style.comment__action}>
-              ...
-            </span>
-          }
+          {action && <span className={style.comment__action}>...</span>}
           <span className={style.comment__edited}>
             {comment.createdAt !== comment.updatedAt && 'edited'}
           </span>
@@ -74,14 +69,14 @@ export function SendComment(props: any) {
         style={
           props.commentText
             ? {
-              filter:
-                'invert(43%) sepia(63%) saturate(561%) hue-rotate(171deg) brightness(93%) contrast(90%)',
-              cursor: 'pointer'
-            }
+                filter:
+                  'invert(43%) sepia(63%) saturate(561%) hue-rotate(171deg) brightness(93%) contrast(90%)',
+                cursor: 'pointer'
+              }
             : {
-              filter:
-                'invert(90%) sepia(4%) saturate(7%) hue-rotate(331deg) brightness(97%) contrast(76%)'
-            }
+                filter:
+                  'invert(90%) sepia(4%) saturate(7%) hue-rotate(331deg) brightness(97%) contrast(76%)'
+              }
         }
         onClick={props.handleCommentSubmit}
       />
@@ -138,8 +133,7 @@ export default function PostDetail(props: { post: IPost | null }) {
   return (
     <div className={style.root}>
       <div className={style.image__container}>
-        <img src={props.post?.medias[0]?.file} referrerPolicy="no-referrer"
-             alt=""/>
+        <img src={props.post?.medias[0]?.file} referrerPolicy="no-referrer" alt="" />
       </div>
       <div className={style.post__desc}>
         <div className={style.headline}>
@@ -164,17 +158,17 @@ export default function PostDetail(props: { post: IPost | null }) {
         <div className={style.comments}>
           <p className={style.comment__count}>comments:{commentQuantity} </p>
           {comments.map((c: IComment) => (
-            <CommentItem key={c.id} comment={c}/>
+            <CommentItem key={c.id} comment={c} />
           ))}
         </div>
         <div className={style.post__action}>
           <div className={style.actions__items}>
-            <FavoriteIcon/>
-            <RedoIcon/>
-            <BookmarkIcon/>
+            <FavoriteIcon />
+            <RedoIcon />
+            <BookmarkIcon />
           </div>
           <SendComment
-            style={{paddingRight: '1pt'}}
+            style={{ paddingRight: '1pt' }}
             commentText={commentText}
             handleChange={handleChange}
             handleCommentSubmit={handleCommentSubmit}
