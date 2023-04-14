@@ -81,6 +81,11 @@
   padding: 2pt;
   border-bottom: solid 0.7px #949393;
   height: 7%;
+  overflow-y: auto;
+
+  p {
+    word-wrap: break-word
+  }
 }
 
 .comment__avatar {
@@ -125,6 +130,18 @@
       margin-left: 5pt;
       font-size: 9px;
       font-weight: 400;
+    }
+
+    .comment__reply {
+      margin-left: 5pt;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .comment__action {
+      margin-left: 5pt;
+      font-size: 14px;
+      font-weight: 600;
     }
 
     p {
