@@ -15,7 +15,6 @@ import { toRepresent } from '../../services/utils/date';
 function CommentItem(props: { comment: IComment }) {
   const { comment } = props;
   const navigate = useNavigate();
-  console.log(props);
 
   const dateDiff = (date1: Date, date2: Date) => {
     // @ts-ignore
@@ -82,6 +81,7 @@ export default function PostDetail(props: { post: IPost | null }) {
   const [postDetailed, setPostDetailed] = useState<null | IPost>(null);
   const [comments, setComments] = useState<IComment[]>([]);
   const [commentQuantity, setCommentQuantity] = useState<undefined | number>(undefined);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getResponse(
@@ -105,11 +105,12 @@ export default function PostDetail(props: { post: IPost | null }) {
   };
 
   const handleCommentSubmit = () => {
-    if (commentText === '') {
+    if (commentText.trim() === '') {
       return;
     }
     createComment(props.post?.id, commentText)
       .then((r) => {
+        console.log(r.data);
         // @ts-ignore
         setComments((prevState) => [r.data, ...prevState]);
       })
@@ -127,13 +128,26 @@ export default function PostDetail(props: { post: IPost | null }) {
       </div>
       <div className={style.post__desc}>
         <div className={style.headline}>
-          <p>{postDetailed?.creatorUsername}</p>
+          <div className={style.comment__avatar}>
+            <img
+              onClick={() => navigate(`/profile/${postDetailed?.creatorId}`)}
+              src={
+                postDetailed?.creatorAvatar
+                  ? API_URL?.concat(postDetailed?.creatorAvatar)
+                  : defaultUserLogo
+              }
+              alt="post creator"
+            />
+          </div>
+          <p onClick={() => navigate(`/profile/${postDetailed?.creatorId}`)}>
+            {postDetailed?.creatorUsername}
+          </p>
         </div>
         <div className={style.post__desc_text}>
           <p>{postDetailed?.description}</p>
         </div>
         <div className={style.comments}>
-          <p>comments {commentQuantity} </p>
+          <p className={style.comment__count}>comments:{commentQuantity} </p>
           {comments.map((c: IComment) => (
             <CommentItem key={c.id} comment={c} />
           ))}

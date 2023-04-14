@@ -57,6 +57,9 @@
 .headline {
   height: 32pt;
   border-bottom: solid 0.7px #949393;
+  display: flex;
+  align-content: center;
+  align-items: center;
 }
 
 .comments {
@@ -80,22 +83,28 @@
   height: 7%;
 }
 
+.comment__avatar {
+  margin-bottom: 1pt;
+  margin-right: 4pt;
+  margin-left: 2pt;
+
+  img {
+    cursor: pointer;
+    border-radius: 50%;
+    max-width: 32px;
+    max-height: 32px;
+  }
+}
+
+
+.comment__count {
+  font-size: 14px;
+}
+
 .comment__block {
   padding: 4pt;
   display: flex;
 
-  .comment__avatar {
-    margin-bottom: 1pt;
-    margin-right: 4pt;
-    margin-left: 2pt;
-
-    img {
-      cursor: pointer;
-      border-radius: 50%;
-      max-width: 32px;
-      max-height: 32px;
-    }
-  }
 
   .comment__main {
     word-break: break-word;

@@ -34,6 +34,8 @@ export interface IPost {
   description: string;
   creatorUsername: string;
   medias: Media[];
+  creatorId: number;
+  creatorAvatar: string | null;
 }
 
 export interface IFeedPost {
