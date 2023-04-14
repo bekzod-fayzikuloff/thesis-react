@@ -81,4 +81,5 @@ export interface IComment {
   avatar: string | null;
   username: number;
   creatorId: number;
+  updatedAt: string;
 }

@@ -10,10 +10,17 @@ import { useNavigate } from 'react-router-dom';
 import RedoIcon from '@mui/icons-material/Redo';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import { toRepresent } from '../../services/utils/date';
 
 function CommentItem(props: { comment: IComment }) {
   const { comment } = props;
   const navigate = useNavigate();
+  console.log(props);
+
+  const dateDiff = (date1: Date, date2: Date) => {
+    // @ts-ignore
+    return toRepresent(Math.abs((date1 - date2) / 1000));
+  };
 
   return (
     <div className={style.comment__block}>
@@ -27,6 +34,12 @@ function CommentItem(props: { comment: IComment }) {
       <div className={style.comment__main}>
         <span onClick={() => navigate(`/profile/${comment.creatorId}`)}>{comment.username}</span>
         <p>{comment.content}</p>
+        <p className={style.comment__created}>
+          {dateDiff(new Date(), new Date(comment.createdAt))}
+          <span className={style.comment__edited}>
+            {comment.createdAt !== comment.updatedAt && 'edited'}
+          </span>
+        </p>
       </div>
     </div>
   );

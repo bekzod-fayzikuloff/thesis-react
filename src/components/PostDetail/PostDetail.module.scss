@@ -107,6 +107,17 @@
       cursor: pointer;
     }
 
+    .comment__created {
+      font-size: 12px;
+
+    }
+
+    .comment__edited {
+      margin-left: 5pt;
+      font-size: 9px;
+      font-weight: 400;
+    }
+
     p {
       font-size: 14px;
     }
