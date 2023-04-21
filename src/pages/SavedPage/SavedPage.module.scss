@@ -17,6 +17,13 @@
       gap: 20px;
     }
 
+    img {
+      width: 100%;
+      height: 275px;
+      border-radius: 10px;
+
+    }
+
     div > div {
       cursor: pointer;
       border: 1px solid grey;
@@ -87,3 +94,24 @@
     }
   }
 }
+
+.detail__post {
+  border: none !important;
+  height: 275px !important;
+  position: relative;
+  overflow: hidden;
+}
+
+
+.detail__post:hover img {
+  -webkit-transition: all 300ms ease-in-out;
+  -o-transition: all 300ms ease-in-out;
+  transition: all 300ms ease-in-out;
+  -webkit-filter: blur(1px);
+  -moz-filter: blur(1px);
+  -ms-filter: blur(1px);
+  -o-filter: blur(1px);
+  filter: blur(1px);
+  transform: scale(1.03);
+}
+

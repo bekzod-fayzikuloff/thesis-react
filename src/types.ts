@@ -29,7 +29,15 @@ export type Media = {
 
 export interface IPost {
   id: number;
+  likes: number;
+  comments: number;
+  description: string;
+  creatorUsername: string;
   medias: Media[];
+  creatorId: number;
+  creatorAvatar: string | null;
+  postIsSaved: boolean;
+  postIsLiked: boolean;
 }
 
 export interface IFeedPost {
@@ -46,6 +54,9 @@ export interface IFeedPost {
   commentsQuantity: number;
   postIsLiked: boolean;
   postIsSaved: boolean;
+  postIsSavedGroups: number[];
+  postLikeId: number | null;
+  postSavedGroupId: number;
 }
 
 export interface IPostGroup {
@@ -56,4 +67,25 @@ export interface IPostGroup {
     medias: Media[];
   };
   title: string;
+}
+
+export interface IPostGroupDetail {
+  id: number;
+  posts: {
+    id: number;
+    comments: number;
+    likes: number;
+    medias: Media[];
+  }[];
+  title: string;
+}
+
+export interface IComment {
+  id: number;
+  content: string;
+  createdAt: string;
+  avatar: string | null;
+  username: number;
+  creatorId: number;
+  updatedAt: string;
 }

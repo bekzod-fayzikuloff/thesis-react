@@ -13,6 +13,7 @@ import { InboxLayout } from './layouts/Inbox';
 import { InboxEmpty, MessageArea } from './pages/InboxPage';
 import { UtilsProvider } from './context/UtilsProvider';
 import { SavedDetailPage, SavedPage } from './pages/SavedPage';
+import ProfileEditPage from './pages/ProfileEditPage';
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
               <Route path="/" element={<MainLayout />}>
                 <Route index element={<FeedPage />} />
                 <Route path={'/saved/:savedId'} element={<SavedDetailPage />} />
-                <Route path={'/profile/edit'} element={<h1>Edit</h1>} />
+                <Route path={'/profile/edit'} element={<ProfileEditPage />} />
                 <Route path={'/profile/saved'} element={<SavedPage />} />
                 <Route path={'/profile/:userId'} element={<ProfilePage />} />
                 <Route path="/" element={<InboxLayout />}>
@@ -32,6 +33,7 @@ function App() {
                   <Route path="/d/:chatId" element={<MessageArea />} />
                 </Route>
               </Route>
+              <Route path={'/p/:postId'} element={<h1>Posts</h1>} />
             </Route>
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />

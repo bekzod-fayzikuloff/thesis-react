@@ -34,10 +34,10 @@ export function Sidebar() {
       />
       <SidebarItem toLink="#" toRepr="Search" onClick={handleClick} />
       <Modal
+        childClassName={style.search__modal}
         style={{
           width: '480px',
-          height: '400px',
-          overflowY: 'scroll'
+          height: '400px'
         }}
         isOpen={searchOpen}
         toggle={searchToggle}

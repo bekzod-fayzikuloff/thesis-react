@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
 import { API_URL } from '../../config';
-import { IPostGroup } from '../../types';
+import { IPostGroup, IPostGroupDetail } from '../../types';
 import style from './SavedPage.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -130,12 +130,33 @@ export const SavedPage = () => {
 };
 
 export const SavedDetailPage = () => {
+  const [savedGroup, setSavedGroup] = useState<IPostGroupDetail>();
   const { savedId } = useParams();
-  console.log(savedId);
+  const navigate = useNavigate();
+  useEffect(() => {
+    axios.get(`${API_URL}/api/posts-groups/${savedId}`).then((response) => {
+      console.log(response.data);
+      setSavedGroup(response.data);
+    });
+  }, []);
   return (
     <div className={style.root}>
       <SavedPageHeader backRef={`/profile/saved/`} />
-      <h1>savedId</h1>
+      <div className={style.detail__group}>
+        <div className={style.groups__stack}>
+          {savedGroup?.posts.map((post) => {
+            return (
+              <div
+                onClick={() => navigate(`/p/${post.id}`)}
+                className={style.detail__post}
+                key={post.id}
+              >
+                <img src={`${API_URL}${post.medias[0].file}`} alt="" />
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };

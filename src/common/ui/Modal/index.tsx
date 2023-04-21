@@ -4,6 +4,7 @@ import React, { CSSProperties, ReactNode, useEffect } from 'react';
 interface ModalType {
   children?: ReactNode;
   className?: string;
+  childClassName?: string;
   style?: CSSProperties;
   isOpen: boolean;
   toggle: () => void;
@@ -23,7 +24,7 @@ export default function Modal(props: ModalType) {
           <div
             style={props.style}
             onClick={(e) => e.stopPropagation()}
-            className={style.modal__box}
+            className={`${style.modal__box} ${props.childClassName}`}
           >
             {props.children}
           </div>
