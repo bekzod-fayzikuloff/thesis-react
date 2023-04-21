@@ -44,4 +44,4 @@ folder.
 [Followers and Followed users managing](./images/followers_manage_access.png) <br />
 [Private Profile Page](./images/private_profile_page.png) <br />
 [Access to view content after follow](./images/access_to_content_after_follow.png) <br />
-[Send message to other users Page (TODO)](./images/message_to_others(todo).png) <br />
+[Send message to other users Page (TODO)](<./images/message_to_others(todo).png>) <br />

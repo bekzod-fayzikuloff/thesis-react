@@ -36,6 +36,8 @@ export interface IPost {
   medias: Media[];
   creatorId: number;
   creatorAvatar: string | null;
+  postIsSaved: boolean;
+  postIsLiked: boolean;
 }
 
 export interface IFeedPost {
@@ -53,6 +55,8 @@ export interface IFeedPost {
   postIsLiked: boolean;
   postIsSaved: boolean;
   postIsSavedGroups: number[];
+  postLikeId: number | null;
+  postSavedGroupId: number;
 }
 
 export interface IPostGroup {

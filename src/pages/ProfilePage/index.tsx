@@ -12,7 +12,7 @@ import jwt_decode from 'jwt-decode';
 import { InfinitySpin } from 'react-loader-spinner';
 import { UtilsContext } from '../../context/UtilsProvider';
 import axios from 'axios';
-import { IFollower, IPost, IUserProfile } from '../../types';
+import { IFeedPost, IFollower, IUserProfile } from '../../types';
 import PostDetail from '../../components/PostDetail';
 
 const deleteFollower = (followerId: number) => {
@@ -127,9 +127,9 @@ const FollowersItems = ({
 };
 
 const PostContainer = (props: { navigate: any }) => {
-  const [posts, setPosts] = useState<IPost[]>([]);
+  const [posts, setPosts] = useState<IFeedPost[]>([]);
   const { isOpen: postIsOpen, toggle: postToggle } = useModal();
-  const [currentPost, setCurrentPost] = useState<null | IPost>(null);
+  const [currentPost, setCurrentPost] = useState<null | IFeedPost>(null);
 
   const { userId } = useParams();
   useEffect(() => {
@@ -141,7 +141,7 @@ const PostContainer = (props: { navigate: any }) => {
     });
   }, [props.navigate]);
 
-  const handlePost = (post: IPost) => {
+  const handlePost = (post: IFeedPost) => {
     setCurrentPost(post);
     postToggle();
   };
@@ -150,7 +150,7 @@ const PostContainer = (props: { navigate: any }) => {
     <>
       <div className={style.grid__wrapper}>
         <div className={style.grid}>
-          {posts.map((post: IPost) => {
+          {posts.map((post: IFeedPost) => {
             return (
               <div key={post?.id}>
                 <img
