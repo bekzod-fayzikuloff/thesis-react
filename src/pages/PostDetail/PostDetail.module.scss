@@ -2,6 +2,7 @@
   height: 100vh;
   width: 100%;
   margin-left: 17%;
+  overflow: hidden;
 
   .wrapper {
     padding-top: 20pt;
@@ -11,13 +12,10 @@
     .container {
       margin-left: 7%;
       margin-right: 7%;
-      background-color: #fff;
       display: flex;
       border-radius: 12pt;
       height: 90%;
-      -webkit-box-shadow: -5px -5px 62px -42px rgba(34, 60, 80, 0.6) inset;
-      -moz-box-shadow: -5px -5px 62px -42px rgba(34, 60, 80, 0.6) inset;
-      box-shadow: -5px -5px 62px -42px rgba(34, 60, 80, 0.6) inset;
+      border: 1px solid #7781a1;
 
       .image__container {
         max-width: 65%;
@@ -73,4 +71,69 @@
     max-width: 32px;
     max-height: 32px;
   }
+}
+
+.comments {
+  height: 78%;
+  overflow-y: scroll;
+}
+
+
+@media (max-height: 900px) {
+  .comments {
+    height: 76%;
+  }
+}
+
+
+@media (max-height: 777px) {
+  .comments {
+    height: 75%;
+  }
+  .likes__count {
+    font-size: 12px;
+  }
+}
+
+@media (max-height: 720px) {
+  .comments {
+    height: 73%;
+  }
+}
+
+@media (max-height: 660px) {
+  .comments {
+    height: 70%;
+  }
+
+}
+
+@media (max-height: 590px) {
+  .comments {
+    height: 67%;
+  }
+  .likes__count {
+    font-size: 9px;
+  }
+}
+
+@media (max-height: 535px) {
+  .comments {
+    height: 66%;
+  }
+}
+
+@media (max-height: 505px) {
+  .comments {
+    height: 62%;
+  }
+}
+
+@media (max-height: 475px) {
+  .comments {
+    height: 61%;
+  }
+}
+
+@media screen and (max-width: 780px) {
 }

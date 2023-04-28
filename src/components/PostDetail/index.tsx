@@ -18,7 +18,7 @@ import useModal from '../../hooks/useModal';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 
-function CommentItem(props: { comment: IComment }) {
+export function CommentItem(props: { comment: IComment }) {
   const { comment } = props;
   const navigate = useNavigate();
   const [action, setAction] = useState(false);
